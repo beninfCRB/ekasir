@@ -45,7 +45,7 @@ export default function EditProduct() {
         message.error(errorData?.message)
       }
 
-      navigate(`edit/${response.data?.data?.id}`)
+      navigate(`/admin/product/edit/${response.data?.data?.id}`)
       message.success(response.data?.message)
     } catch (error: any) {
       message.error(error.message)
@@ -82,7 +82,7 @@ export default function EditProduct() {
           </div>
         }
       >
-        <FormProduct form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} />
+        <FormProduct form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} asEdit={id ? true : false} />
       </Card>
     </div>
   )

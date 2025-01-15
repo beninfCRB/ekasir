@@ -7,6 +7,7 @@ import TableProduct from "../../components/product/table"
 import { productType } from '../../components/product/types'
 import { base_url } from "../../constants/env"
 import axiosInstance from "../../utils/axios"
+import { generateBreadcrumbItems } from "../../components/breadcrumb"
 
 
 const Product = () => {
@@ -38,12 +39,11 @@ const Product = () => {
       if (!response.data?.data) {
         message.error(response.data?.message)
       }
-
-      setData(response.data?.data as productType[])
     } catch (err: any) {
       message.error(err.message)
     } finally {
       setLoading(false)
+      getData()
     }
   }, [])
 
@@ -65,23 +65,7 @@ const Product = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <Breadcrumb
-        items={[
-          {
-            href: '',
-            title: <HomeOutlined />,
-          },
-          {
-            href: '',
-            title: (
-              <>
-                <ProductOutlined />
-                <span>Produk</span>
-              </>
-            ),
-          }
-        ]}
-      />
+      <Breadcrumb items={generateBreadcrumbItems(location.pathname)} />
       <Card
         title='DATA PRODUK'
         extra={
