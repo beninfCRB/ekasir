@@ -20,7 +20,7 @@ const TableProduct = ({ data, onDelete, onView, loading }: TableProductType) => 
       dataIndex: 'price',
       key: 'price',
       width: '40%',
-      render: (price: number) => currency(price),
+      render: (price: string) => currency(Number(price)),
     },
   ]
 

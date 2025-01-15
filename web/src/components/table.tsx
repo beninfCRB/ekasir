@@ -121,7 +121,8 @@ export default function TableMod<T extends { id?: string }>({ data, columnlists,
   const columns = [
     ...columnlists.map((column: any) => ({
       ...column,
-      ...getColumnSearchProps(column.dataIndex as DataIndex)
+      ...getColumnSearchProps(column.dataIndex as DataIndex),
+      render: column.render
     })),
     {
       title: <div className="flex justify-center">Aksi</div>,
