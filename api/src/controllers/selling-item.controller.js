@@ -93,12 +93,12 @@ export const createSellingItem = async (req, res, next) => {
         }
       })
 
-      const price = stock.product?.price
+      const price = Number(stock.product?.price)
       const sumPrice = sellingItemExists.length > 0 ? Number(sellingItemExists.reduce((acc, curr) => acc + curr.total, 0)) : 0;
-      const total = (price * amount) + sumPrice
-      const taxPrice = (price * tax.percent) / 100
-      const grandTotal = total + taxPrice
-      const amountUpdate = stock.amount - amount
+      const total = Number(price * amount)
+      const taxPrice = Number((price * tax.percent)) / 100
+      const grandTotal = Number(total) + Number(taxPrice) + Number(sumPrice)
+      const amountUpdate = Number(stock.amount) - Number(amount)
 
       const input = {
         taxId: tax.id,
@@ -179,9 +179,9 @@ export const deleteSellingItem = async (req, res, next) => {
       })
 
       if (data) {
-        const taxPrice = sellingItem.selling?.taxPrice - ((sellingItem.selling?.tax?.percent * sellingItem.total) / 100)
-        const grandTotal = sellingItem.selling?.grandTotal - sellingItem.total
-        const amount = sellingItem.stock?.amount + sellingItem.amount
+        const taxPrice = Number(sellingItem.selling?.taxPrice) - Number((sellingItem.selling?.tax?.percent * sellingItem.total) / 100)
+        const grandTotal = Number(sellingItem.selling?.grandTotal) - Number(sellingItem.total)
+        const amount = Number(sellingItem.stock?.amount) + Number(sellingItem.amount)
 
         await model.selling.update({
           where: {

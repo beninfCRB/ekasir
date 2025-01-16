@@ -80,7 +80,7 @@ export default function ListSellingItem({ id }: { id?: string }) {
                 }
               />
               <div className='mr-4'>
-                {deleted ?
+                {deleted === item.id ?
                   <span className="flex flex-row justify-center gap-2">
                     <Typography.Link onClick={delData} style={{ marginInlineEnd: 8 }}>
                       Hapus
