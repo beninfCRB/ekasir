@@ -76,7 +76,7 @@ export default function ListSellingItem({ id }: { id?: string }) {
                 className='px-4'
                 title={<span>{item.stock?.product?.name}</span>}
                 description={
-                  <span>[ Harga Satuan: {currency(Number(item.stock?.product?.price))} x  Jumlah: {item.amount} ] = Total: {item.total}</span>
+                  <span>[ Harga Satuan: {currency(Number(item.stock?.product?.price))} x  Jumlah: {item.amount} ] = Total: {currency(Number(item.total))}</span>
                 }
               />
               <div className='mr-4'>

@@ -95,7 +95,7 @@ const Selling = () => {
             <Typography.Link onClick={onAdd} style={{ marginInlineEnd: 8 }}>
               Lanjutkan
             </Typography.Link>
-            <Popconfirm title="Batalkan tindakan hapus data ?" onConfirm={() => setCreate(false)}>
+            <Popconfirm title="Batalkan tindakan penjualan data ?" onConfirm={() => setCreate(false)}>
               <a>Batal</a>
             </Popconfirm>
           </span> :
