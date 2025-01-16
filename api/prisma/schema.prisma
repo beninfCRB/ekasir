@@ -22,13 +22,127 @@ model user {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  categoryCreated    category[]     @relation("created_user_category")
+  categoryUpdated    category[]     @relation("updated_user_category")
+  productCreated     product[]      @relation("created_user_product")
+  productUpdated     product[]      @relation("updated_user_product")
+  stockCreated       stock[]        @relation("created_user_stock")
+  stockUpdated       stock[]        @relation("updated_user_stock")
+  taxCreated         tax[]          @relation("created_user_tax")
+  taxUpdated         tax[]          @relation("updated_user_tax")
+  sellingCreated     selling[]      @relation("created_user_selling")
+  sellingUpdated     selling[]      @relation("updated_user_selling")
+  sellingItemCreated selling_item[] @relation("created_user_selling_item")
+  sellingItemUpdated selling_item[] @relation("updated_user_selling_item")
+
   @@unique([username, email])
 }
 
-model product {
+model category {
   id        String   @id() @default(uuid())
-  name      String?
-  price     Float?
+  code      String   @unique
+  name      String
+  desc      String?
+  createdBy String?
+  updatedBy String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  product product[]
+
+  createdUser user? @relation("created_user_category", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedUser user? @relation("updated_user_category", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model product {
+  id         String   @id() @default(uuid())
+  code       String   @unique
+  name       String?
+  price      Float?
+  categoryId String?
+  createdBy  String?
+  updatedBy  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  stock stock[]
+
+  category category? @relation(fields: [categoryId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+
+  createdUser user? @relation("created_user_product", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedUser user? @relation("updated_user_product", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model stock {
+  id        String    @id() @default(uuid())
+  code      String    @unique
+  productId String
+  amount    Int
+  expiredAt DateTime?
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  selling_item selling_item[]
+
+  product product @relation(fields: [productId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+
+  createdUser user? @relation("created_user_stock", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedUser user? @relation("updated_user_stock", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tax {
+  id        String   @id() @default(uuid())
+  code      String   @unique
+  name      String
+  percent   Float
+  desc      String?
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  selling selling[]
+
+  createdUser user? @relation("created_user_tax", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedUser user? @relation("updated_user_tax", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model selling {
+  id          String   @id() @default(uuid())
+  code        String   @unique
+  taxId       String?
+  taxPrice    Float?
+  grandtotal  Float?
+  cashPrice   Float?
+  returnPrice Float?
+  createdBy   String?
+  updatedBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tax tax? @relation(fields: [taxId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+
+  createdUser user? @relation("created_user_selling", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedUser user? @relation("updated_user_selling", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model selling_item {
+  id        String   @id() @default(uuid())
+  code      String   @unique
+  sellingId String
+  stockId   String
+  amount    Int
+  price     Float
+  total     Float
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stock stock @relation(fields: [stockId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+
+  createdUser user? @relation("created_user_selling_item", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedUser user? @relation("updated_user_selling_item", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

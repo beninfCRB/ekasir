@@ -3,12 +3,24 @@ import ErrorBoundary from "./components/result/boundary";
 import NotFound from "./components/result/notfound";
 import Signin from "./pages/auth/signin";
 import AddProduct from "./pages/products/add";
-import Product from "./pages/products/product";
+import Product from "./pages/products";
 import EditProduct from "./pages/products/edit";
 import Home from "./pages/home";
 import MainLayout from "./components/mainlayout";
 import ViewProduct from "./pages/products/view";
 import SignUp from "./pages/auth/signup";
+import Category from "./pages/category";
+import AddCategory from "./pages/category/add";
+import EditCategory from "./pages/category/edit";
+import ViewCategory from "./pages/category/view";
+import ViewStock from "./pages/stock/view";
+import Stock from "./pages/stock";
+import AddStock from "./pages/stock/add";
+import EditStock from "./pages/stock/edit";
+import Tax from "./pages/tax";
+import AddTax from "./pages/tax/add";
+import EditTax from "./pages/tax/edit";
+import ViewTax from "./pages/tax/view";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +46,54 @@ const router = createBrowserRouter([
       {
         path: "product/view/:id",
         element: <ErrorBoundary><ViewProduct /></ErrorBoundary>,
+      },
+      {
+        path: "category",
+        element: <ErrorBoundary><Category /></ErrorBoundary>,
+      },
+      {
+        path: "category/add",
+        element: <ErrorBoundary><AddCategory /></ErrorBoundary>,
+      },
+      {
+        path: "category/edit/:id",
+        element: <ErrorBoundary><EditCategory /></ErrorBoundary>,
+      },
+      {
+        path: "category/view/:id",
+        element: <ErrorBoundary><ViewCategory /></ErrorBoundary>,
+      },
+      {
+        path: "stock",
+        element: <ErrorBoundary><Stock /></ErrorBoundary>,
+      },
+      {
+        path: "stock/add",
+        element: <ErrorBoundary><AddStock /></ErrorBoundary>,
+      },
+      {
+        path: "stock/edit/:id",
+        element: <ErrorBoundary><EditStock /></ErrorBoundary>,
+      },
+      {
+        path: "stock/view/:id",
+        element: <ErrorBoundary><ViewStock /></ErrorBoundary>,
+      },
+      {
+        path: "tax",
+        element: <ErrorBoundary><Tax /></ErrorBoundary>,
+      },
+      {
+        path: "tax/add",
+        element: <ErrorBoundary><AddTax /></ErrorBoundary>,
+      },
+      {
+        path: "tax/edit/:id",
+        element: <ErrorBoundary><EditTax /></ErrorBoundary>,
+      },
+      {
+        path: "tax/view/:id",
+        element: <ErrorBoundary><ViewTax /></ErrorBoundary>,
       },
     ],
   },

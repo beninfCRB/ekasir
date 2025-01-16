@@ -1,13 +1,13 @@
-import { HomeOutlined, PlusCircleOutlined, ProductOutlined, RedoOutlined } from "@ant-design/icons"
+import { PlusCircleOutlined, RedoOutlined } from "@ant-design/icons"
 import { Breadcrumb, Card, message } from "antd"
 import { useCallback, useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router"
+import { generateBreadcrumbItems } from "../../components/breadcrumb"
 import TooltipButton from "../../components/button/toolltip"
 import TableProduct from "../../components/product/table"
 import { productType } from '../../components/product/types'
 import { base_url } from "../../constants/env"
 import axiosInstance from "../../utils/axios"
-import { generateBreadcrumbItems } from "../../components/breadcrumb"
 
 
 const Product = () => {
@@ -67,6 +67,7 @@ const Product = () => {
     <div className="flex flex-col gap-2">
       <Breadcrumb items={generateBreadcrumbItems(location.pathname)} />
       <Card
+             className={`shadow-md shadow-blue-400`}
         title='DATA PRODUK'
         extra={
           <div className="flex flex-row gap-2 my-4">

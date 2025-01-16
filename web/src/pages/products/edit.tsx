@@ -48,7 +48,11 @@ export default function EditProduct() {
       navigate(`/admin/product/edit/${response.data?.data?.id}`)
       message.success(response.data?.message)
     } catch (error: any) {
-      message.error(error.message)
+      if (error.status === 422 && Array.isArray(error.response.data.message)) {
+        error.response.data.message.map((v: any) => message.error(v.msg))
+      } else {
+        message.error(error.message)
+      }
     } finally {
       setLoading(false)
     }
@@ -67,6 +71,7 @@ export default function EditProduct() {
     <div className="flex flex-col gap-2">
       <Breadcrumb items={generateBreadcrumbItems(location.pathname)} />
       <Card
+        className={`shadow-md shadow-blue-400`}
         title='UBAH PRODUK'
         extra={
           <div className="flex flex-row gap-2 my-4">

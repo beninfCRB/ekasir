@@ -1,9 +1,15 @@
 import { validationResult } from "express-validator";
 import { prisma } from "../utils/prisma.util.js";
+import { PREFIX } from "../constants/code.constant.js";
+import { getCurrentUser } from "../utils/user.js";
 
 export const getProducts = async (req, res, next) => {
   try {
-    const data = await prisma.product.findMany()
+    const data = await prisma.product.findMany({
+      include: {
+        category: true
+      }
+    })
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
@@ -16,6 +22,9 @@ export const getProduct = async (req, res, next) => {
     const data = await prisma.product.findFirst({
       where: {
         id: req.params.id
+      },
+      include: {
+        category: true
       }
     })
 
@@ -30,12 +39,19 @@ export const createProduct = async (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
 
-    const { name, price } = req.body
+    const { name, price, categoryId } = req.body
+
+    const code = PREFIX.PRODUCT + new Date().getTime().toString().substring(0, 4)
+    const userId = (await getCurrentUser(req)).id
 
     const data = await prisma.product.create({
       data: {
+        code,
         name,
-        price
+        price,
+        categoryId,
+        createdBy: userId,
+        updatedBy: userId
       }
     })
 
@@ -50,7 +66,9 @@ export const updateProduct = async (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
 
-    const { name, price } = req.body
+    const { name, price, categoryId } = req.body
+
+    const userId = (await getCurrentUser(req)).id
 
     const data = await prisma.product.update({
       where: {
@@ -58,7 +76,9 @@ export const updateProduct = async (req, res, next) => {
       },
       data: {
         name,
-        price
+        price,
+        categoryId,
+        updatedBy: userId
       }
     })
 

@@ -1,5 +1,6 @@
 import { Button, Form, Input, InputNumber, Space } from "antd";
 import { FormType } from "../../types/form";
+import SelectCategory from "../category/select";
 
 interface FormProductType extends FormType { }
 
@@ -24,6 +25,22 @@ export default function FormProduct({ form, onSave, onCancel, asEdit, loading }:
       >
         <Input
           placeholder='Masukan Nama Produk'
+        />
+      </Form.Item>
+      <Form.Item
+        label='Kategori Produk'
+        name={'categoryId'}
+        hasFeedback
+        rules={[
+          {
+            required: true,
+            message: 'Masukan Kategori Produk'
+          }
+        ]}
+      >
+        <SelectCategory
+          placeholder="Masukan Kategori Produk"
+          loading={loading}
         />
       </Form.Item>
       <Form.Item

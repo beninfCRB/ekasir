@@ -5,6 +5,12 @@ import 'dotenv/config'
 import productRoute from './src/routes/product.route.js'
 import authRoute from './src/routes/auth.route.js'
 import bodyParser from 'body-parser'
+import categoryRoute from './src/routes/category.route.js'
+import taxRoute from './src/routes/tax.route.js'
+import sellingRoute from './src/routes/selling.route.js'
+import sellingItemRoute from './src/routes/selling-item.route.js'
+import stockRoute from './src/routes/stock.route.js'
+import expressListRoutes from 'express-list-routes'
 
 const app = express()
 let port = Number(process.env.APP_PORT)
@@ -31,7 +37,12 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1',
   authRoute,
+  categoryRoute,
   productRoute,
+  stockRoute,
+  taxRoute,
+  sellingRoute,
+  sellingItemRoute,
 )
 
 app.use((err, req, res, next) => {
@@ -43,6 +54,8 @@ app.use((err, req, res, next) => {
 app.all("*", (req, res) => {
   res.status(404).json({ message: `Route ${req.originalUrl} not found` })
 })
+
+expressListRoutes(app)
 
 console.log(`Server is runnning at ${url}:${port}`)
 

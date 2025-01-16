@@ -40,8 +40,8 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-300 bg-[url('assets/image/bg-sign in.jpeg')] bg-cover bg-center">
-      <div className="flex flex-col bg-white shadow-md p-4 sm:p-6 md:p-8 lg:p-10 rounded-md w-full max-w-xs"> {/* Menggunakan utilitas padding dari Tailwind CSS */}
-        <div className="font-bold text-center text-xl sm:text-2xl uppercase text-gray-800"> {/* Menghapus self-center yang mungkin bermasalah */}
+      <div className="flex flex-col bg-white shadow-md p-4 sm:p-6 md:p-8 lg:p-10 rounded-md w-full max-w-xs shadow-blue-400">
+        <div className="font-bold text-center text-xl sm:text-2xl uppercase text-gray-800">
           SELAMAT DATANG
           <p className='text-xs text-gray-300'>silahkan mendaftarkan akun anda</p>
         </div>

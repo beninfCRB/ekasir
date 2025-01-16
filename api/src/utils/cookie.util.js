@@ -8,4 +8,4 @@ export const accessTokenOptions = {
   secure: true,
   sameSite: 'Lax',
   path: '/'
-};
+}

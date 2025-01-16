@@ -1,4 +1,4 @@
-import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, ProductOutlined } from "@ant-design/icons";
+import { ContainerOutlined, DollarOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, ProductOutlined, StockOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, MenuProps, message, theme } from "antd";
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router";
@@ -37,7 +37,7 @@ export default function MainLayout() {
   return (
     <ProtectedRoute>
       <Layout className='flex flex-col'>
-        <Sider trigger={null} collapsible collapsed={collapsed}>
+        <Sider className="rounded-xl p-0" trigger={null} collapsible collapsed={collapsed}>
           <div className="demo-logo-vertical" />
           <Menu
             theme="dark"
@@ -46,9 +46,24 @@ export default function MainLayout() {
             onClick={onClick}
             items={[
               {
+                key: 'category',
+                icon: <ContainerOutlined />,
+                label: 'Kategori'
+              },
+              {
                 key: 'product',
                 icon: <ProductOutlined />,
                 label: 'Produk'
+              },
+              {
+                key: 'stock',
+                icon: <StockOutlined />,
+                label: 'Stok'
+              },
+              {
+                key: 'tax',
+                icon: <DollarOutlined />,
+                label: 'Pajak'
               },
             ]}
           />
@@ -67,7 +82,7 @@ export default function MainLayout() {
             />
             <div className="flex border items-stretch gap-2">
               <div className="font-bold italic text-slate-400 text-lg">
-                {locale.username}
+                {locale && locale.username}
               </div>
               <TooltipButton
                 title="Sign Out"
@@ -82,6 +97,7 @@ export default function MainLayout() {
             </div>
           </Header>
           <Content
+            className="shadow-2xl"
             style={{
               margin: '24px 16px',
               padding: 24,
