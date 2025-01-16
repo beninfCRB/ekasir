@@ -26,7 +26,7 @@ export default function EditCategory() {
 
       form.setFieldsValue({ ...response.data?.data })
     } catch (error: any) {
-      message.error(error.message)
+      message.error(error.response.data.message)
     }
   }, [])
 

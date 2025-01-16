@@ -2,13 +2,30 @@ import { validationResult } from "express-validator";
 import { prisma } from "../utils/prisma.util.js";
 import { PREFIX } from "../constants/code.constant.js";
 import { getCurrentUser } from "../utils/user.js";
+import moment from 'moment'
 
 export const getSellingItems = async (req, res, next) => {
   try {
-    const data = await prisma.selling_item.findMany()
+    const { sellingId } = req.query
+
+    if (!sellingId) res.status(500).json({ data: null, message: 'Head penjualan tidak ditemukan' })
+
+    const data = await prisma.selling_item.findMany({
+      where: {
+        sellingId: sellingId
+      },
+      include: {
+        stock: {
+          include: {
+            product: true
+          }
+        }
+      }
+    })
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -23,6 +40,7 @@ export const getSellingItem = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -35,7 +53,7 @@ export const createSellingItem = async (req, res, next) => {
 
       const { sellingId, code, amount } = req.body
 
-      const codeSellingItem = PREFIX.SELLING_ITEM + new Date().getTime().toString().substring(0, 4)
+      const codeSellingItem = PREFIX.SELLING_ITEM + new Date().getTime().toString()
       const userId = (await getCurrentUser(req)).id
 
       const stock = await model.stock.findFirst({
@@ -47,15 +65,17 @@ export const createSellingItem = async (req, res, next) => {
         }
       })
 
-      if (!stock) res.status(500).json({ data: null, message: 'Data penjualan tidak ditemukan' })
 
-      if (amount > stock.amount) res.status(500).json({ data: null, message: 'penjualan tidak cukup' })
+      if (!stock) res.status(500).json({ data: null, message: 'Data stok tidak ditemukan' })
+
+      if (amount > stock.amount) res.status(500).json({ data: null, message: 'Stok tidak cukup' })
 
       const tax = await model.tax.findFirst({
         orderBy: {
           createdAt: 'desc'
         }
       })
+
 
       if (!tax) res.status(500).json({ data: null, message: 'Data pajak tidak ditemukan' })
 
@@ -69,22 +89,21 @@ export const createSellingItem = async (req, res, next) => {
 
       const sellingItemExists = await model.selling_item.findMany({
         where: {
-          sellingId
-        },
-        select: {
-          price: true
+          sellingId: selling.id
         }
       })
 
-      const price = sellingItemExists.length > 0 ? sellingItemExists.reduce((acc, curr) => acc + curr.price, 0) : 0;
-      const total = price * amount
+      const price = stock.product?.price
+      const sumPrice = sellingItemExists.length > 0 ? Number(sellingItemExists.reduce((acc, curr) => acc + curr.total, 0)) : 0;
+      const total = (price * amount) + sumPrice
       const taxPrice = (price * tax.percent) / 100
-      const grandtotal = total + taxPrice
+      const grandTotal = total + taxPrice
+      const amountUpdate = stock.amount - amount
 
       const input = {
         taxId: tax.id,
         taxPrice,
-        grandtotal
+        grandTotal
       }
 
       const inputItem = {
@@ -96,7 +115,7 @@ export const createSellingItem = async (req, res, next) => {
         stockId: stock.id,
       }
 
-      const data = model.selling_item.create({
+      const data = await model.selling_item.create({
         data: {
           ...inputItem,
           createdBy: userId,
@@ -110,7 +129,18 @@ export const createSellingItem = async (req, res, next) => {
             id: selling.id
           },
           data: {
-            ...input
+            ...input,
+            updatedBy: userId
+          }
+        })
+
+        await model.stock.update({
+          where: {
+            id: stock.id
+          },
+          data: {
+            amount: amountUpdate,
+            updatedBy: userId
           }
         })
       }
@@ -118,20 +148,67 @@ export const createSellingItem = async (req, res, next) => {
       res.status(201).json({ data, message: 'Data berhasil dibuat' })
     })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
 export const deleteSellingItem = async (req, res, next) => {
   try {
-    const data = await prisma.selling_item.delete({
-      where: {
-        id: req.params.id
-      }
-    })
+    return await prisma.$transaction(async (model) => {
+      const userId = (await getCurrentUser(req)).id
 
-    res.status(200).json({ data, message: 'Data berhasil dihapus' })
+      const sellingItem = await model.selling_item.findFirst({
+        where: {
+          id: req.id
+        },
+        include: {
+          selling: {
+            include: {
+              tax: true
+            }
+          },
+          stock: true
+        }
+      })
+
+      const data = await model.selling_item.delete({
+        where: {
+          id: sellingItem.id
+        }
+      })
+
+      if (data) {
+        const taxPrice = sellingItem.selling?.taxPrice - ((sellingItem.selling?.tax?.percent * sellingItem.total) / 100)
+        const grandTotal = sellingItem.selling?.grandTotal - sellingItem.total
+        const amount = sellingItem.stock?.amount + sellingItem.amount
+
+        await model.selling.update({
+          where: {
+            id: sellingItem.sellingId
+          },
+          data: {
+            taxPrice,
+            grandTotal,
+            updatedBy: userId
+          }
+        })
+
+        await model.stock.update({
+          where: {
+            id: sellingItem.stockId
+          },
+          data: {
+            amount,
+            updatedBy: userId
+          }
+        })
+      }
+
+      res.status(200).json({ data, message: 'Data berhasil dihapus' })
+    })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }

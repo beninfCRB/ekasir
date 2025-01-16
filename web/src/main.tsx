@@ -18,7 +18,7 @@ createRoot(document.getElementById('root')!).render(
             headerBg: '#3d84f0',
             rowHoverBg: '#f3f3f3',
             headerColor: 'white'
-          }
+          },
         },
       }}
     >

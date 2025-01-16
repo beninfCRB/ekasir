@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
+import moment from 'moment';
 import { prisma } from "../utils/prisma.util.js";
-import { PREFIX } from "../constants/code.constant.js";
 import { getCurrentUser } from "../utils/user.js";
 
 export const getStocks = async (req, res, next) => {
@@ -13,6 +13,7 @@ export const getStocks = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -30,6 +31,7 @@ export const getStock = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -56,6 +58,7 @@ export const createStock = async (req, res, next) => {
 
     res.status(201).json({ data, message: 'Data berhasil dibuat' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -84,6 +87,7 @@ export const updateStock = async (req, res, next) => {
 
     res.status(201).json({ data, message: 'Data berhasil diubah' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -98,6 +102,7 @@ export const deleteStock = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dihapus' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }

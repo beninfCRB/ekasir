@@ -1,5 +1,5 @@
 import { RollbackOutlined } from "@ant-design/icons";
-import { Breadcrumb, Card, Form, message, theme } from "antd";
+import { Breadcrumb, Card, Form, message } from "antd";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { generateBreadcrumbItems } from "../../components/breadcrumb";
@@ -13,7 +13,6 @@ export default function AddCategory() {
   const [isLoading, setLoading] = useState<boolean>(false)
   const navigate = useNavigate()
   const location = useLocation()
-  const { token } = theme.useToken()
 
   const onSubmit = async () => {
     setLoading(true)
@@ -32,7 +31,7 @@ export default function AddCategory() {
       if (error.status === 422 && Array.isArray(error.response.data.message)) {
         error.response.data.message.map((v: any) => message.error(v.msg))
       } else {
-        message.error(error.message)
+        message.error(error.response.data.message)
       }
     } finally {
       setLoading(false)

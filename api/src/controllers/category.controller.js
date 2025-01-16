@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import { PREFIX } from "../constants/code.constant.js";
 import { prisma } from "../utils/prisma.util.js";
 import { getCurrentUser } from "../utils/user.js";
+import moment from 'moment'
 
 export const getCategorys = async (req, res, next) => {
   try {
@@ -9,6 +10,7 @@ export const getCategorys = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -23,6 +25,7 @@ export const getCategory = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -34,7 +37,7 @@ export const createCategory = async (req, res, next) => {
 
     const { name, desc } = req.body
 
-    const code = PREFIX.CATEGORY + new Date().getTime().toString().substring(0, 4)
+    const code = PREFIX.CATEGORY + new Date().getTime().toString()
     const userId = (await getCurrentUser(req)).id
 
     const data = await prisma.category.create({
@@ -49,6 +52,7 @@ export const createCategory = async (req, res, next) => {
 
     res.status(201).json({ data, message: 'Data berhasil dibuat' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -75,6 +79,7 @@ export const updateCategory = async (req, res, next) => {
 
     res.status(201).json({ data, message: 'Data berhasil diubah' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -89,6 +94,7 @@ export const deleteCategory = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dihapus' })
   } catch (error) {
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }

@@ -47,6 +47,7 @@ app.use('/api/v1',
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500
+  console.log(`[${new Date.toString()}] ${err.message}`)
   res.status(statusCode).json({ message: err.message })
 })
 

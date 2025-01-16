@@ -1,6 +1,7 @@
 import { Button, DatePicker, Form, Input, InputNumber, Space } from "antd";
 import { FormType } from "../../types/form";
 import SelectProduct from "../product/select";
+import FormButton from "../button/form";
 
 interface FormStockType extends FormType { }
 
@@ -13,33 +14,33 @@ export default function FormStock({ form, onSave, onCancel, asEdit, loading }: F
       initialValues={{ layout: 'vertical' }}
     >
       <Form.Item
-        label='Kode Produk'
+        label='Kode Stok'
         name={'code'}
         hasFeedback
         rules={[
           {
             required: true,
-            message: 'Masukan Kode Produk'
+            message: 'Masukan Kode Stok'
           }
         ]}
       >
         <Input
-          placeholder='Masukan Kode Produk'
+          placeholder='Masukan Kode Stok'
         />
       </Form.Item>
       <Form.Item
-        label='Nama Produk'
+        label='Nama Stok'
         name={'productId'}
         hasFeedback
         rules={[
           {
             required: true,
-            message: 'Masukan Nama Produk'
+            message: 'Masukan Nama Stok'
           }
         ]}
       >
         <SelectProduct
-          placeholder='Masukan Nama Produk'
+          placeholder='Masukan Nama Stok'
           loading={loading}
         />
       </Form.Item>
@@ -76,19 +77,7 @@ export default function FormStock({ form, onSave, onCancel, asEdit, loading }: F
           placeholder='Masukan Tanggal Kadaluarsa'
         />
       </Form.Item>
-      <Space
-        className="justify-end w-full"
-      >
-        <Button
-          onClick={onCancel}
-          loading={loading}
-        >Batal</Button>
-        <Button
-          type="primary"
-          onClick={onSave}
-          loading={loading}
-        >{asEdit ? 'Ubah' : 'Tambah'}</Button>
-      </Space>
+      <FormButton onSave={onSave} onCancel={onCancel} loading={loading} asEdit={asEdit} />
     </Form>
   )
 }

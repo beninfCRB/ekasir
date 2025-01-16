@@ -7,7 +7,7 @@ const sellingRoute = Router()
 
 sellingRoute.get('/sellings', isAuthenticated, getSellings)
 sellingRoute.get('/selling/:id', isAuthenticated, getSelling)
-sellingRoute.post('/selling', isAuthenticated, sellingDto, createSelling)
+sellingRoute.get('/data/selling/create', isAuthenticated, createSelling)
 sellingRoute.put('/selling/:id', isAuthenticated, sellingDto, updateSelling)
 sellingRoute.delete('/selling/:id', isAuthenticated, deleteSelling)
 

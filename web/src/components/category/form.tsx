@@ -1,5 +1,6 @@
-import { Button, Form, Input, Space } from "antd";
+import { Form, Input } from "antd";
 import { FormType } from "../../types/form";
+import FormButton from "../button/form";
 
 interface FormCategoryType extends FormType { }
 
@@ -42,19 +43,7 @@ export default function FormCategory({ form, onSave, onCancel, asEdit, loading }
           placeholder='Masukan Keterangan Kategori'
         />
       </Form.Item>
-      <Space
-        className="justify-end w-full"
-      >
-        <Button
-          onClick={onCancel}
-          loading={loading}
-        >Batal</Button>
-        <Button
-          type="primary"
-          onClick={onSave}
-          loading={loading}
-        >{asEdit ? 'Ubah' : 'Tambah'}</Button>
-      </Space>
+      <FormButton onSave={onSave} onCancel={onCancel} loading={loading} asEdit={asEdit} />
     </Form>
   )
 }

@@ -1,5 +1,6 @@
 import { Button, Form, Input, InputNumber, Space } from "antd";
 import { FormType } from "../../types/form";
+import FormButton from "../button/form";
 
 interface FormTaxType extends FormType { }
 
@@ -59,19 +60,7 @@ export default function FormTax({ form, onSave, onCancel, asEdit, loading }: For
           placeholder='Masukan Keterangan Pajak'
         />
       </Form.Item>
-      <Space
-        className="justify-end w-full"
-      >
-        <Button
-          onClick={onCancel}
-          loading={loading}
-        >Batal</Button>
-        <Button
-          type="primary"
-          onClick={onSave}
-          loading={loading}
-        >{asEdit ? 'Ubah' : 'Tambah'}</Button>
-      </Space>
+      <FormButton onSave={onSave} onCancel={onCancel} loading={loading} asEdit={asEdit} />
     </Form>
   )
 }

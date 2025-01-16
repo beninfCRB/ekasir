@@ -1,14 +1,18 @@
-import { RollbackOutlined } from "@ant-design/icons";
 import { Breadcrumb, Card, Form, message } from "antd";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { generateBreadcrumbItems } from "../../components/breadcrumb";
-import TooltipButton from "../../components/button/toolltip";
-import FormProduct from "../../components/product/form";
+import FormSellingItem from "../../components/selling-item/form";
 import { base_url } from "../../constants/env";
 import axiosInstance from "../../utils/axios";
 
-export default function AddProduct() {
+interface AddSellingItemType {
+  id?: string,
+  setTab: (v: string) => void
+  onRefresh: () => void
+}
+
+export default function AddSellingItem({ id, setTab, onRefresh }: AddSellingItemType) {
   const [form] = Form.useForm()
   const [isLoading, setLoading] = useState<boolean>(false)
   const navigate = useNavigate()
@@ -18,22 +22,27 @@ export default function AddProduct() {
     setLoading(true)
     try {
       const values = await form.validateFields()
-      const response = await axiosInstance.post(`${base_url}/api/v1/product`, values)
+      const response = await axiosInstance.post(`${base_url}/api/v1/selling-item`, { ...values, sellingId: id })
 
       if (!response.data?.data) {
         const errorData = response.data?.message
         message.error(errorData?.message)
       }
 
-      navigate(`/admin/product/edit/${response.data?.data?.id}`)
+      navigate(`/admin/selling/edit/${id}`)
+      setTab('selling')
+      onRefresh()
       message.success(response.data?.message)
     } catch (error: any) {
+      console.log('error===>', error);
+
       if (error.status === 422 && Array.isArray(error.response.data.message)) {
         error.response.data.message.map((v: any) => message.error(v.msg))
       } else {
         message.error(error.response.data.message)
       }
     } finally {
+      setTab('selling')
       setLoading(false)
     }
   }
@@ -43,31 +52,14 @@ export default function AddProduct() {
     navigate(-1)
   }
 
-  const onBack = () => {
-    navigate(-1)
-  }
-
   return (
     <div className="flex flex-col gap-2">
       <Breadcrumb items={generateBreadcrumbItems(location.pathname)} />
       <Card
         className={`shadow-md shadow-blue-400`}
-        title='TAMBAH PRODUK'
-        extra={
-          <div className="flex flex-row gap-2 my-4">
-            <TooltipButton
-              title="Kembali halaman sebelumnya"
-              text="Kembali"
-              icon={<RollbackOutlined />}
-              type="primary"
-              shape="circle"
-              size="middle"
-              onCLick={onBack}
-            />
-          </div>
-        }
+        title='TAMBAH KATEGORI'
       >
-        <FormProduct form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} />
+        <FormSellingItem form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} />
       </Card>
     </div>
   )

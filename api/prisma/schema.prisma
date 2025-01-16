@@ -58,7 +58,7 @@ model product {
   id         String   @id() @default(uuid())
   code       String   @unique
   name       String?
-  price      Float?
+  price      Decimal? @default(0) @db.Decimal(16, 2)
   categoryId String?
   createdBy  String?
   updatedBy  String?
@@ -77,7 +77,7 @@ model stock {
   id        String    @id() @default(uuid())
   code      String    @unique
   productId String
-  amount    Int
+  amount    Float     @default(0)
   expiredAt DateTime?
   createdBy String?
   updatedBy String?
@@ -113,16 +113,17 @@ model selling {
   id          String   @id() @default(uuid())
   code        String   @unique
   taxId       String?
-  taxPrice    Float?
-  grandtotal  Float?
-  cashPrice   Float?
-  returnPrice Float?
+  taxPrice    Decimal? @default(0) @db.Decimal(16, 2)
+  grandTotal  Decimal? @default(0) @db.Decimal(16, 2)
+  cashPrice   Decimal? @default(0) @db.Decimal(16, 2)
+  returnPrice Decimal? @default(0) @db.Decimal(16, 2)
   createdBy   String?
   updatedBy   String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  tax tax? @relation(fields: [taxId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  tax          tax?           @relation(fields: [taxId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  selling_item selling_item[]
 
   createdUser user? @relation("created_user_selling", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
   updatedUser user? @relation("updated_user_selling", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -130,18 +131,19 @@ model selling {
 
 model selling_item {
   id        String   @id() @default(uuid())
-  code      String   @unique
+  code      String
   sellingId String
   stockId   String
-  amount    Int
-  price     Float
-  total     Float
+  amount    Float    @default(0)
+  price     Decimal  @default(0) @db.Decimal(16, 2)
+  total     Decimal  @default(0) @db.Decimal(16, 2)
   createdBy String?
   updatedBy String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  stock stock @relation(fields: [stockId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  stock   stock   @relation(fields: [stockId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  selling selling @relation(fields: [sellingId], references: [id], onUpdate: NoAction, onDelete: NoAction)
 
   createdUser user? @relation("created_user_selling_item", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
   updatedUser user? @relation("updated_user_selling_item", fields: [updatedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)

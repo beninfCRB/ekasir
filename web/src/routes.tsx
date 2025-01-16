@@ -21,6 +21,9 @@ import Tax from "./pages/tax";
 import AddTax from "./pages/tax/add";
 import EditTax from "./pages/tax/edit";
 import ViewTax from "./pages/tax/view";
+import Selling from "./pages/selling";
+import EditSelling from "./pages/selling/edit";
+import ViewSelling from "./pages/selling/view";
 
 const router = createBrowserRouter([
   {
@@ -94,6 +97,18 @@ const router = createBrowserRouter([
       {
         path: "tax/view/:id",
         element: <ErrorBoundary><ViewTax /></ErrorBoundary>,
+      },
+      {
+        path: "selling",
+        element: <ErrorBoundary><Selling /></ErrorBoundary>,
+      },
+      {
+        path: "selling/edit/:id",
+        element: <ErrorBoundary><EditSelling /></ErrorBoundary>,
+      },
+      {
+        path: "selling/view/:id",
+        element: <ErrorBoundary><ViewSelling /></ErrorBoundary>,
       },
     ],
   },

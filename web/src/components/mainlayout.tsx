@@ -1,4 +1,4 @@
-import { ContainerOutlined, DollarOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, ProductOutlined, StockOutlined } from "@ant-design/icons";
+import { ContainerOutlined, DollarOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, ProductOutlined, StockOutlined, TransactionOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, MenuProps, message, theme } from "antd";
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router";
@@ -64,6 +64,11 @@ export default function MainLayout() {
                 key: 'tax',
                 icon: <DollarOutlined />,
                 label: 'Pajak'
+              },
+              {
+                key: 'selling',
+                icon: <TransactionOutlined />,
+                label: 'Penjualan'
               },
             ]}
           />

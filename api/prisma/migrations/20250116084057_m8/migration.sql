@@ -1,0 +1,16 @@
+-- AlterTable
+ALTER TABLE `product` MODIFY `price` DECIMAL(16, 2) NULL DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE `selling` MODIFY `taxPrice` DECIMAL(16, 2) NULL DEFAULT 0,
+    MODIFY `grandtotal` DECIMAL(16, 2) NULL DEFAULT 0,
+    MODIFY `cashPrice` DECIMAL(16, 2) NULL DEFAULT 0,
+    MODIFY `returnPrice` DECIMAL(16, 2) NULL DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE `selling_item` MODIFY `amount` INTEGER NOT NULL DEFAULT 0,
+    MODIFY `price` DECIMAL(16, 2) NOT NULL DEFAULT 0,
+    MODIFY `total` DECIMAL(16, 2) NOT NULL DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE `stock` MODIFY `amount` INTEGER NOT NULL DEFAULT 0;
