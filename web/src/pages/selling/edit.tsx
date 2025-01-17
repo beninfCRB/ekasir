@@ -108,7 +108,7 @@ export default function EditSelling() {
                 onClick={() => setTab('selling')}
               >
                 <FormSelling form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} asEdit={id ? true : false} />
-                <Divider plain>DAFTAR ITEM</Divider>
+                <Divider plain style={{ fontWeight: 'bold' }}>DAFTAR ITEM</Divider>
                 <ListSellingItem id={id} />
               </div>
             },

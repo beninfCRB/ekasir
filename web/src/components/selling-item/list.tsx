@@ -1,4 +1,4 @@
-import { Empty, List, message, Popconfirm, Typography } from 'antd';
+import { Card, Empty, List, message, Popconfirm, Typography } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { useCallback, useEffect, useState } from 'react';
 import { base_url } from '../../constants/env';
@@ -8,7 +8,7 @@ import { sellingItemType } from './types';
 import { DeleteOutlined } from '@ant-design/icons';
 import TooltipButton from '../button/toolltip';
 
-const ContainerHeight = 400
+const ContainerHeight = 250
 
 export default function ListSellingItem({ id }: { id?: string }) {
   const [data, setData] = useState<sellingItemType[] | []>([])
@@ -42,6 +42,7 @@ export default function ListSellingItem({ id }: { id?: string }) {
     } catch (err: any) {
       message.error(err.message)
     } finally {
+      setDeleted(undefined)
       setLoading(false)
       getData()
     }
@@ -58,54 +59,58 @@ export default function ListSellingItem({ id }: { id?: string }) {
   };
 
   return (
-    <List>
-      {data?.length > 0 ?
-        <VirtualList
-          data={data}
-          height={ContainerHeight}
-          itemHeight={47}
-          itemKey="id"
-          onScroll={onScroll}
-        >
-          {(item: sellingItemType) => (
-            <List.Item
-              className='rounded-2xl hover:bg-[#f3f3f3]'
-              key={item.id}
-            >
-              <List.Item.Meta
-                className='px-4'
-                title={<span>{item.stock?.product?.name}</span>}
-                description={
-                  <span>[ Harga Satuan: {currency(Number(item.stock?.product?.price))} x  Jumlah: {item.amount} ] = Total: {currency(Number(item.total))}</span>
-                }
-              />
-              <div className='mr-4'>
-                {deleted === item.id ?
-                  <span className="flex flex-row justify-center gap-2">
-                    <Typography.Link onClick={delData} style={{ marginInlineEnd: 8 }}>
-                      Hapus
-                    </Typography.Link>
-                    <Popconfirm title="Batalkan tindakan hapus data ?" onConfirm={() => setDeleted(undefined)}>
-                      <a>Batal</a>
-                    </Popconfirm>
-                  </span>
-                  :
-                  <TooltipButton
-                    title="Delete Data"
-                    text="Delete"
-                    textSize='xs'
-                    icon={<DeleteOutlined />}
-                    type="dashed"
-                    shape="circle"
-                    size="middle"
-                    onCLick={() => setDeleted(item.id as string)}
-                  />
-                }
-              </div>
-            </List.Item>
-          )}
-        </VirtualList> : <Empty />
-      }
-    </List>
+    <Card
+      className={`shadow-md shadow-blue-400`}
+    >
+      <List>
+        {data?.length > 0 ?
+          <VirtualList
+            data={data}
+            height={ContainerHeight}
+            itemHeight={47}
+            itemKey="id"
+            onScroll={onScroll}
+          >
+            {(item: sellingItemType) => (
+              <List.Item
+                className='rounded-2xl hover:bg-[#f3f3f3]'
+                key={item.id}
+              >
+                <List.Item.Meta
+                  className='px-4'
+                  title={<span>{item.stock?.product?.name}</span>}
+                  description={
+                    <span>[ Harga Satuan: {currency(Number(item.stock?.product?.price))} x  Jumlah: {item.amount} ] = Total: {currency(Number(item.total))}</span>
+                  }
+                />
+                <div className='mr-4'>
+                  {deleted === item?.id ?
+                    <span className="flex flex-row justify-center gap-2">
+                      <Typography.Link onClick={delData} style={{ marginInlineEnd: 8 }}>
+                        Hapus
+                      </Typography.Link>
+                      <Popconfirm title="Batalkan tindakan hapus data ?" onConfirm={() => setDeleted(undefined)}>
+                        <a>Batal</a>
+                      </Popconfirm>
+                    </span>
+                    :
+                    <TooltipButton
+                      title="Delete Data"
+                      text="Delete"
+                      textSize='xs'
+                      icon={<DeleteOutlined />}
+                      type="dashed"
+                      shape="circle"
+                      size="middle"
+                      onCLick={() => setDeleted(item?.id)}
+                    />
+                  }
+                </div>
+              </List.Item>
+            )}
+          </VirtualList> : <Empty />
+        }
+      </List>
+    </Card>
   )
 }
