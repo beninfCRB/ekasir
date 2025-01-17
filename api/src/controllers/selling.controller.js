@@ -96,13 +96,23 @@ export const updateSelling = async (req, res, next) => {
 
 export const deleteSelling = async (req, res, next) => {
   try {
-    const data = await prisma.selling.delete({
-      where: {
-        id: req.params.id
-      }
-    })
+    return await prisma.$transaction(async (model) => {
+      const selling = await model.selling.findFirst({
+        where: {
+          id
+        }
+      })
 
-    res.status(200).json({ data, message: 'Data berhasil dihapus' })
+      if (selling.cashPrice > 0 && selling.returnPrice >= 0) res.status(500).json({ data: null, message: 'Transaksi penjualan sudah selesai' })
+
+      const data = await model.selling.delete({
+        where: {
+          id: req.params.id
+        }
+      })
+
+      res.status(200).json({ data, message: 'Data berhasil dihapus' })
+    })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })

@@ -87,6 +87,7 @@ export const createSellingItem = async (req, res, next) => {
 
       if (!selling) res.status(500).json({ data: null, message: 'Data penjualan tidak ditemukan' })
 
+      if (selling.cashPrice > 0 && selling.returnPrice >= 0) res.status(500).json({ data: null, message: 'Transaksi penjualan sudah selesai' })
 
       const price = Number(stock.product?.price)
       const total = Number(price * amount)
