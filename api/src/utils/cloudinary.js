@@ -1,19 +1,21 @@
 import { v2 } from 'cloudinary'
 import 'dotenv/config'
+import moment from 'moment'
 
+const cloud = v2.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_SECRET_KEY,
+})
 
 export const cloudinaryUpload = async (file) => {
 
   let data = { imageId: undefined, imageUrl: undefined }
+
   if (file) {
-    v2.config({
-      cloud_name: process.env.CLOUD_NAME,
-      api_key: process.env.CLOUD_API_KEY,
-      api_secret: process.env.CLOUD_SECRET_KEY,
-    })
 
     try {
-      data = await v2.uploader.upload(
+      data = await cloud.uploader.upload(
         file.tempFilePath,
         {
           public_id: new Date().getTime(),
@@ -30,7 +32,7 @@ export const cloudinaryUpload = async (file) => {
 }
 
 export const cloudinaryDelete = async (id) => {
-  await v2.uploader.destroy(id)
+  await cloud.uploader.destroy(id)
 }
 
 export const cloudinaryReUpload = async (id, file) => {
@@ -44,7 +46,7 @@ export const cloudinaryReUpload = async (id, file) => {
         await cloudinaryDelete(id)
       }
 
-      data = await v2.uploader.upload(
+      data = await cloud.uploader.upload(
         file.tempFilePath,
         {
           public_id: new Date().getTime(),
@@ -56,6 +58,7 @@ export const cloudinaryReUpload = async (id, file) => {
       console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`)
       throw error
     }
+
   }
 
   return { imageId: data.public_id, imageUrl: data.secure_url }

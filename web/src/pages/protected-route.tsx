@@ -9,7 +9,7 @@ export const ProtectedRoute = ({ children }: { children: JSX.Element | JSX.Eleme
   }
 
   if (locale && location.pathname === '/signin') {
-    return <Navigate replace={true} to={'/admin'} />
+    return <Navigate replace={true} to={'/admin/product'} />
   }
 
   return children
