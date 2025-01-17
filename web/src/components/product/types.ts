@@ -1,4 +1,5 @@
 import { categoryType } from "../category/types";
+import { stockType } from "../stock/types";
 
 export interface productType {
   id?: string;
@@ -12,4 +13,5 @@ export interface productType {
   updatedAt?: Date;
 
   category?: categoryType;
+  stock?: stockType[];
 }

@@ -71,8 +71,9 @@ export default function Home() {
                   </div>
                   <div className="p-4">
                     <h2 className="text-lg font-bold">{product.name}</h2>
-                    <p className="text-gray-600"><span className='text-blue-500'>Kode Produk</span> : {product.code}</p>
+                    <p className="text-gray-600"><span className='text-blue-500'>Nama Produk</span> : {product.name}</p>
                     <p className="text-gray-600"><span className='text-blue-500'>Kategori</span> : {product.category?.name || '-'}</p>
+                    <p className="text-gray-600"><span className='text-blue-500'>Stok Tersedia</span> : {product.stock?.reduce((a, b) => a + (b.amount || 0), 0)}</p>
                     <p className="text-gray-600"><span className='text-blue-500'>Harga</span> : Rp {product.price}</p>
                   </div>
                 </Card>

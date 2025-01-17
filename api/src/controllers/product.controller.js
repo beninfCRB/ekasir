@@ -9,7 +9,8 @@ export const getProducts = async (req, res, next) => {
   try {
     const data = await prisma.product.findMany({
       include: {
-        category: true
+        category: true,
+        stock: true
       }
     })
 
