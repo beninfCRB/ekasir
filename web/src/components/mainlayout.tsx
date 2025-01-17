@@ -43,7 +43,8 @@ export default function MainLayout() {
   return (
     <ProtectedRoute>
       <Layout className='flex flex-col'>
-        <Sider className="rounded-xl p-0" trigger={null} collapsible collapsed={collapsed}>
+        <Sider className="rounded-sm p-0" trigger={null} collapsible collapsed={collapsed}>
+          <div className="flex justify-center items-center font-bold text-white text-lg p-8">E-KASIR</div>
           <div className="demo-logo-vertical" />
           <Menu
             theme="dark"
