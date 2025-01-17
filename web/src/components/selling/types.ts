@@ -1,3 +1,4 @@
+import { sellingItemType } from "../selling-item/types";
 import { taxType } from "../tax/types";
 
 export interface sellingType {
@@ -12,4 +13,5 @@ export interface sellingType {
   updatedAt?: Date;
 
   tax?: taxType;
+  selling_item?: sellingItemType[];
 }

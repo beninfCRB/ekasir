@@ -1,17 +1,12 @@
-import { Breadcrumb, Card, Descriptions, DescriptionsProps, Spin } from "antd";
-import { generateBreadcrumbItems } from "../breadcrumb";
-import TooltipButton from "../button/toolltip";
-import { RollbackOutlined } from "@ant-design/icons";
-import { sellingType } from "./types";
+import { Descriptions, DescriptionsProps } from "antd";
 import { currency } from "../../utils/rupiah";
+import { sellingType } from "./types";
 
 interface DescriptionSellingType {
   data?: sellingType
-  isLoading?: boolean
-  onBack: () => void
 }
 
-export default function DescriptionSelling({ data, onBack, isLoading }: DescriptionSellingType) {
+export default function DescriptionSelling({ data }: DescriptionSellingType) {
   const items: DescriptionsProps['items'] = data ? [
     {
       key: '1',
@@ -46,29 +41,6 @@ export default function DescriptionSelling({ data, onBack, isLoading }: Descript
   ] : [];
 
   return (
-    <div className="flex flex-col gap-2">
-      <Breadcrumb items={generateBreadcrumbItems(location.pathname)} />
-      <Card
-        className={`shadow-md shadow-blue-400`}
-        title="INFO PAJAK"
-        extra={
-          <div className="flex flex-row gap-2 my-4">
-            <TooltipButton
-              title="Kembali halaman sebelumnya"
-              text="Kembali"
-              icon={<RollbackOutlined />}
-              type="primary"
-              shape="circle"
-              size="middle"
-              onCLick={onBack}
-            />
-          </div>
-        }
-      >
-        <Spin spinning={isLoading}>
-          <Descriptions items={items} />
-        </Spin>
-      </Card>
-    </div>
+    <Descriptions items={items} />
   )
 }

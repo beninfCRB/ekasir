@@ -1,9 +1,10 @@
-import { RollbackOutlined } from "@ant-design/icons"
-import { Breadcrumb, Button, Card, Divider, Form, message } from "antd"
+import { PrinterOutlined, RollbackOutlined } from "@ant-design/icons"
+import { Breadcrumb, Card, Divider, Form, message } from "antd"
 import { useCallback, useEffect, useState } from "react"
 import { useLocation, useNavigate, useParams } from "react-router"
 import { generateBreadcrumbItems } from "../../components/breadcrumb"
 import TooltipButton from "../../components/button/toolltip"
+import { ModalReport } from "../../components/report/modal"
 import ListSellingItem from "../../components/selling-item/list"
 import FormSelling from "../../components/selling/form"
 import TabsMod from "../../components/tabs"
@@ -18,6 +19,7 @@ export default function EditSelling() {
   const location = useLocation()
   const { id } = useParams();
   const [tab, setTab] = useState<string>('selling')
+  const [modal, setModal] = useState<boolean>(false)
 
 
   const getData = useCallback(async () => {
@@ -76,54 +78,72 @@ export default function EditSelling() {
     getData()
   }
 
+  const onPrint = () => {
+    setModal((value: boolean) => !value)
+  }
+
   return (
-    <div className="flex flex-col gap-2">
-      <Breadcrumb items={generateBreadcrumbItems(location.pathname)} />
-      <Card
-        className={`shadow-md shadow-blue-400`}
-        title='UBAH PENJUALAN'
-        extra={
-          <div className="flex flex-row gap-2 my-4">
-            <TooltipButton
-              title="Kembali halaman sebelumnya"
-              text="Kembali"
-              icon={<RollbackOutlined />}
-              type="primary"
-              shape="circle"
-              size="middle"
-              onCLick={onBack}
-            />
-          </div>
-        }
-      >
-        <TabsMod
-          key={'tabsSellingItem'}
-          defaultActiveKey={tab}
-          size='large'
-          items={[
-            {
-              key: 'selling',
-              label: 'HEAD',
-              children: <div
-                onClick={() => setTab('selling')}
-              >
-                <FormSelling form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} asEdit={id ? true : false} />
-                <Divider plain style={{ fontWeight: 'bold' }}>DAFTAR ITEM</Divider>
-                <ListSellingItem id={id} />
-              </div>
-            },
-            {
-              key: 'selling-item',
-              label: 'ITEM',
-              children: <div
-                onClick={() => setTab('selling-item')}
-              >
-                <AddSellingItem id={id} setTab={setTab} onRefresh={onRefresh} />
-              </div>
-            }
-          ]}
-        />
-      </Card>
+    <div className="w-full min-h-screen">
+      <div className="flex flex-col gap-2">
+        <Breadcrumb items={generateBreadcrumbItems(location.pathname)} />
+        <Card
+          className={`shadow-md shadow-blue-400`}
+          title='UBAH PENJUALAN'
+          extra={
+            <div className="flex flex-row gap-2 my-4">
+              <TooltipButton
+                title="Cetak Laporan"
+                text="Cetak Laporan"
+                icon={<PrinterOutlined />}
+                type="default"
+                shape="circle"
+                size="middle"
+                onCLick={onPrint}
+              />
+              <TooltipButton
+                title="Kembali halaman sebelumnya"
+                text="Kembali"
+                icon={<RollbackOutlined />}
+                type="primary"
+                shape="circle"
+                size="middle"
+                onCLick={onBack}
+              />
+            </div>
+          }
+        >
+          <TabsMod
+            key={'tabsSellingItem'}
+            defaultActiveKey={tab}
+            size='large'
+            items={[
+              {
+                key: 'selling',
+                label: 'HEAD',
+                children: <div
+                  onClick={() => setTab('selling')}
+                >
+                  <FormSelling form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} asEdit={id ? true : false} />
+                  <Divider plain style={{ fontWeight: 'bold' }}>DAFTAR ITEM</Divider>
+                  <ListSellingItem id={id} />
+                </div>
+              },
+              {
+                key: 'selling-item',
+                label: 'ITEM',
+                children: <div
+                  onClick={() => setTab('selling-item')}
+                >
+                  <AddSellingItem id={id} setTab={setTab} onRefresh={onRefresh} />
+                </div>
+              }
+            ]}
+          />
+        </Card>
+      </div>
+      {modal &&
+        <ModalReport id={id as string} isModalOpen={modal} setModalOpen={setModal} />
+      }
     </div>
   )
 }

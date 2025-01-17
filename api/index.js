@@ -11,6 +11,7 @@ import sellingRoute from './src/routes/selling.route.js'
 import sellingItemRoute from './src/routes/selling-item.route.js'
 import stockRoute from './src/routes/stock.route.js'
 import expressListRoutes from 'express-list-routes'
+import reportRoute from './src/routes/report.route.js'
 
 const app = express()
 let port = Number(process.env.APP_PORT)
@@ -43,6 +44,7 @@ app.use('/api/v1',
   taxRoute,
   sellingRoute,
   sellingItemRoute,
+  reportRoute,
 )
 
 app.use((err, req, res, next) => {
