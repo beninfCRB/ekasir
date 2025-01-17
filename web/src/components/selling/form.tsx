@@ -1,9 +1,16 @@
-import { Button, Form, Input, InputNumber, Space } from "antd";
+import { Button, Col, Form, Input, InputNumber, Row, Space } from "antd";
 import { FormType } from "../../types/form";
 
 interface FormSellingType extends FormType { }
 
 export default function FormSelling({ form, onSave, onCancel, loading, asEdit }: FormSellingType) {
+  const span = {
+    xs: 24,
+    sm: 24,
+    md: 12,
+    lg: 12,
+  }
+
   return (
     <Form
       key={'SellingForm'}
@@ -11,41 +18,89 @@ export default function FormSelling({ form, onSave, onCancel, loading, asEdit }:
       form={form}
       initialValues={{ layout: 'vertical' }}
     >
-      <Form.Item
-        label='Kode Produk'
-        name={'code'}
-        hasFeedback
-        rules={[
-          {
-            required: true,
-            message: 'Masukan Kode Produk'
-          }
-        ]}
+      <Row
+        gutter={[10, 10]}
       >
-        <Input
-          disabled={asEdit}
-          placeholder='Masukan Kode Produk'
-        />
-      </Form.Item>
-      <Form.Item
-        label='Bayar Tunai'
-        name={'cashPrice'}
-        hasFeedback
-        rules={[
-          {
-            required: true,
-            message: 'Masukan Bayar Tunai'
-          }
-        ]}
-      >
-        <InputNumber
-          className='w-full'
-          addonBefore='Rp.'
-          placeholder='Masukan Bayar Tunai'
-          formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-          parser={value => value!.replace(/Rp\s?|(,*)/g, '')}
-        />
-      </Form.Item>
+        <Col
+          {...span}
+        >
+          <Form.Item
+            label='Kode Produk'
+            name={'code'}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: 'Masukan Kode Produk'
+              }
+            ]}
+          >
+            <Input
+              disabled={asEdit}
+              placeholder='Masukan Kode Produk'
+            />
+          </Form.Item>
+          <Form.Item
+            label='Grand Total'
+            name={'grandTotal'}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: 'Masukan Grand Total'
+              }
+            ]}
+          >
+            <Input
+              disabled={asEdit}
+              placeholder='Masukan Grand Total'
+            />
+          </Form.Item>
+        </Col>
+        <Col
+          {...span}
+        >
+          <Form.Item
+            label='Bayar Tunai'
+            name={'cashPrice'}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: 'Masukan Bayar Tunai'
+              }
+            ]}
+          >
+            <InputNumber
+              className='w-full'
+              addonBefore='Rp.'
+              placeholder='Masukan Bayar Tunai'
+              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              parser={value => value!.replace(/Rp\s?|(,*)/g, '')}
+            />
+          </Form.Item>
+          <Form.Item
+            label='Uang Kembali'
+            name={'returnPrice'}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: 'Masukan Uang Kembali'
+              }
+            ]}
+          >
+            <InputNumber
+              className='w-full'
+              addonBefore='Rp.'
+              placeholder='Masukan Uang Kembali'
+              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              parser={value => value!.replace(/Rp\s?|(,*)/g, '')}
+              disabled={asEdit}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
       <Space
         className="justify-end w-full"
       >

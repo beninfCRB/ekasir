@@ -27,7 +27,7 @@ export default function EditStock() {
 
       form.setFieldsValue({
         ...response.data?.data,
-        expiredAt: moment(response.data?.data.expiredAt)
+        expiredAt: response.data?.data.expiredAt ? moment(response.data?.data.expiredAt) : null
       })
     } catch (error: any) {
       message.error(error.message)

@@ -10,7 +10,7 @@ export const getSellings = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -25,7 +25,7 @@ export const getSelling = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -48,7 +48,7 @@ export const createSelling = async (req, res, next) => {
 
     res.status(201).json({ data, message: 'Data berhasil dibuat' });
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' });
   }
 };
@@ -89,7 +89,7 @@ export const updateSelling = async (req, res, next) => {
       res.status(201).json({ data, message: 'Data berhasil diubah' })
     })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -104,7 +104,7 @@ export const deleteSelling = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dihapus' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }

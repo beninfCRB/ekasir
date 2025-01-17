@@ -33,7 +33,7 @@ export const signupController = async (req, res, next) => {
 
     res.status(201).json({ data, message: 'Akun berhasil dibuat' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -65,7 +65,7 @@ export const signinController = async (req, res, next) => {
 
     res.status(201).json({ data: exist, message: 'Sign In berhasil' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -75,7 +75,7 @@ export const signoutController = async (req, res, next) => {
     res.clearCookie("access-token", accessTokenOptions)
     res.status(200).json({ data: null, message: "Sign out berhasil" })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: "Sign out gagal" })
   }
 };

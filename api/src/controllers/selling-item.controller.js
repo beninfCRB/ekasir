@@ -25,7 +25,7 @@ export const getSellingItems = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -40,7 +40,7 @@ export const getSellingItem = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -87,17 +87,11 @@ export const createSellingItem = async (req, res, next) => {
 
       if (!selling) res.status(500).json({ data: null, message: 'Data penjualan tidak ditemukan' })
 
-      const sellingItemExists = await model.selling_item.findMany({
-        where: {
-          sellingId: selling.id
-        }
-      })
 
       const price = Number(stock.product?.price)
-      const sumPrice = sellingItemExists.length > 0 ? Number(sellingItemExists.reduce((acc, curr) => acc + curr.total, 0)) : 0;
       const total = Number(price * amount)
-      const taxPrice = Number((price * tax.percent)) / 100
-      const grandTotal = Number(total) + Number(taxPrice) + Number(sumPrice)
+      const taxPrice = (Number((total * tax.percent)) / 100) + Number(selling.taxPrice)
+      const grandTotal = Number(total) + Number(taxPrice) + Number(selling.grandTotal)
       const amountUpdate = Number(stock.amount) - Number(amount)
 
       const input = {
@@ -148,7 +142,7 @@ export const createSellingItem = async (req, res, next) => {
       res.status(201).json({ data, message: 'Data berhasil dibuat' })
     })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -179,8 +173,9 @@ export const deleteSellingItem = async (req, res, next) => {
       })
 
       if (data) {
-        const taxPrice = Number(sellingItem.selling?.taxPrice) - Number((sellingItem.selling?.tax?.percent * sellingItem.total) / 100)
-        const grandTotal = Number(sellingItem.selling?.grandTotal) - Number(sellingItem.total)
+        const taxPriceRemoved = Number((sellingItem.selling?.tax?.percent * sellingItem.total) / 100)
+        const taxPrice = Number(sellingItem.selling?.taxPrice) - taxPriceRemoved
+        const grandTotal = Number(sellingItem.selling?.grandTotal) - (Number(sellingItem.total) + (taxPriceRemoved * Number(sellingItem.amount)))
         const amount = Number(sellingItem.stock?.amount) + Number(sellingItem.amount)
 
         await model.selling.update({
@@ -208,7 +203,7 @@ export const deleteSellingItem = async (req, res, next) => {
       res.status(200).json({ data, message: 'Data berhasil dihapus' })
     })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }

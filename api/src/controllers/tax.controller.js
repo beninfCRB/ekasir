@@ -10,7 +10,7 @@ export const getTaxs = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -25,7 +25,7 @@ export const getTax = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -53,7 +53,7 @@ export const createTax = async (req, res, next) => {
 
     res.status(201).json({ data, message: 'Data berhasil dibuat' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -81,7 +81,7 @@ export const updateTax = async (req, res, next) => {
 
     res.status(201).json({ data, message: 'Data berhasil diubah' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
@@ -96,7 +96,7 @@ export const deleteTax = async (req, res, next) => {
 
     res.status(200).json({ data, message: 'Data berhasil dihapus' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss').toString()} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }

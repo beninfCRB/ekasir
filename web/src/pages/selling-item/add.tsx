@@ -34,8 +34,6 @@ export default function AddSellingItem({ id, setTab, onRefresh }: AddSellingItem
       onRefresh()
       message.success(response.data?.message)
     } catch (error: any) {
-      console.log('error===>', error);
-
       if (error.status === 422 && Array.isArray(error.response.data.message)) {
         error.response.data.message.map((v: any) => message.error(v.msg))
       } else {
