@@ -1,7 +1,7 @@
 import { ContainerOutlined, DollarOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, ProductOutlined, StockOutlined, TransactionOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, MenuProps, message, theme } from "antd";
 import { useState } from "react";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import { base_url } from "../constants/env";
 import { ProtectedRoute } from "../pages/protected-route";
 import axiosInstance, { setupAxiosInterceptors } from "../utils/axios";
@@ -10,6 +10,7 @@ import TooltipButton from "./button/toolltip";
 const { Header, Content, Sider } = Layout;
 
 export default function MainLayout() {
+  const location = useLocation()
   const navigate = useNavigate()
   const locale = JSON.parse(String(localStorage.getItem('user')))
   setupAxiosInterceptors(navigate)
@@ -43,6 +44,7 @@ export default function MainLayout() {
             theme="dark"
             mode="inline"
             defaultSelectedKeys={['product']}
+            activeKey={location.pathname}
             onClick={onClick}
             items={[
               {
