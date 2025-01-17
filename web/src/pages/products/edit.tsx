@@ -1,5 +1,5 @@
 import { RollbackOutlined } from "@ant-design/icons"
-import { Breadcrumb, Card, Form, message } from "antd"
+import { Breadcrumb, Card, Form, GetProp, message, UploadFile, UploadProps } from "antd"
 import { useCallback, useEffect, useState } from "react"
 import { useLocation, useNavigate, useParams } from "react-router"
 import { generateBreadcrumbItems } from "../../components/breadcrumb"
@@ -9,12 +9,16 @@ import { base_url } from "../../constants/env"
 import axiosInstance from "../../utils/axios"
 import { catchError } from "../../utils/catch-error"
 
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
+
 export default function EditProduct() {
   const [form] = Form.useForm()
   const [isLoading, setLoading] = useState<boolean>(false)
   const navigate = useNavigate()
   const location = useLocation()
-  const { id } = useParams();
+  const { id } = useParams()
+  const [fileList, setFileList] = useState<UploadFile[]>([])
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined)
 
   const getData = useCallback(async () => {
     try {
@@ -25,7 +29,10 @@ export default function EditProduct() {
         message.error(errorData?.message)
       }
 
-      form.setFieldsValue({ ...response.data?.data })
+      setImageUrl(response.data?.data?.imageUrl)
+      form.setFieldsValue({
+        ...response.data?.data
+      })
     } catch (error: any) {
       catchError(error, message)
     }
@@ -39,7 +46,18 @@ export default function EditProduct() {
     setLoading(true)
     try {
       const values = await form.validateFields()
-      const response = await axiosInstance.put(`${base_url}/api/v1/product/${id}`, values)
+      const formData = new FormData();
+      fileList.forEach((file) => {
+        formData.append('file', file as FileType)
+        formData.append('name', values.name)
+        formData.append('price', values.price)
+        formData.append('categoryId', values.categoryId)
+      });
+      const response = await axiosInstance.put(`${base_url}/api/v1/product/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
 
       if (!response.data?.data) {
         const errorData = response.data?.message
@@ -84,7 +102,7 @@ export default function EditProduct() {
           </div>
         }
       >
-        <FormProduct form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} asEdit={id ? true : false} />
+        <FormProduct form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} asEdit={id ? true : false} fileList={fileList} setFileList={setFileList} imageUrl={imageUrl} />
       </Card>
     </div>
   )

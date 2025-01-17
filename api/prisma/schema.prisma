@@ -60,6 +60,8 @@ model product {
   name       String?
   price      Decimal? @default(0) @db.Decimal(16, 2)
   categoryId String?
+  imageId    String?
+  imageUrl   String?  @db.Text
   createdBy  String?
   updatedBy  String?
   createdAt  DateTime @default(now())

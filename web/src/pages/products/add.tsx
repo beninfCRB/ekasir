@@ -1,5 +1,5 @@
 import { RollbackOutlined } from "@ant-design/icons";
-import { Breadcrumb, Card, Form, message } from "antd";
+import { Breadcrumb, Card, Form, GetProp, message, UploadFile, UploadProps } from "antd";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { generateBreadcrumbItems } from "../../components/breadcrumb";
@@ -9,17 +9,31 @@ import { base_url } from "../../constants/env";
 import axiosInstance from "../../utils/axios";
 import { catchError } from "../../utils/catch-error";
 
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0]
+
 export default function AddProduct() {
   const [form] = Form.useForm()
   const [isLoading, setLoading] = useState<boolean>(false)
   const navigate = useNavigate()
   const location = useLocation()
+  const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const onSubmit = async () => {
     setLoading(true)
     try {
       const values = await form.validateFields()
-      const response = await axiosInstance.post(`${base_url}/api/v1/product`, values)
+      const formData = new FormData();
+      fileList.forEach((file) => {
+        formData.append('file', file as FileType)
+        formData.append('name', values.name)
+        formData.append('price', values.price)
+        formData.append('categoryId', values.categoryId)
+      });
+      const response = await axiosInstance.post(`${base_url}/api/v1/product`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
 
       if (!response.data?.data) {
         const errorData = response.data?.message
@@ -64,7 +78,7 @@ export default function AddProduct() {
           </div>
         }
       >
-        <FormProduct form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} />
+        <FormProduct form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} fileList={fileList} setFileList={setFileList} />
       </Card>
     </div>
   )

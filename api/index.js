@@ -13,6 +13,7 @@ import stockRoute from './src/routes/stock.route.js'
 import expressListRoutes from 'express-list-routes'
 import reportRoute from './src/routes/report.route.js'
 import moment from 'moment'
+import fileUpload from 'express-fileupload'
 
 const app = express()
 let port = Number(process.env.APP_PORT)
@@ -32,6 +33,12 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 app.use(bodyParser.json())
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
 
 app.get('/', (req, res) => {
   res.send('E-Kasir API')

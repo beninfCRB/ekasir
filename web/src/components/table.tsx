@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined, SearchOutlined } from '@ant-design/icons'
-import { Button, Input, InputRef, Popconfirm, Space, Table, TableColumnType, Typography } from 'antd'
+import { Button, Input, InputRef, Popconfirm, Space, Table, TableColumnType, TableProps, Typography } from 'antd'
 import { FilterDropdownProps } from 'antd/es/table/interface'
 import { useRef, useState } from 'react'
 import Highlighter from 'react-highlight-words'
@@ -175,11 +175,18 @@ export default function TableMod<T extends { id?: string }>({ data, columnlists,
     },
   ]
 
+  const tableProps: TableProps<T> = {
+    dataSource: Array.isArray(data) ? data : [],
+    columns: columns,
+    loading: loading,
+  }
+
   return (
     <Table<T>
-      dataSource={Array.isArray(data) ? data : []}
-      columns={columns}
-      loading={loading}
+      rowKey={'id'}
+      scroll={{ x: 'max-content' }}
+      bordered
+      {...tableProps}
     />
   )
 }

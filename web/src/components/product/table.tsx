@@ -14,18 +14,27 @@ const TableProduct = ({ data, onDelete, onView, loading }: TableProductType) => 
       dataIndex: 'code',
       key: 'code',
       width: '15%',
+      sorter: {
+        compare: (a: any, b: any) => a.code - b.code,
+      },
     },
     {
       title: 'Nama Produk',
       dataIndex: 'name',
       key: 'name',
       width: '25%',
+      sorter: {
+        compare: (a: any, b: any) => a.name - b.name,
+      },
     },
     {
       title: 'Kategori Produk',
       dataIndex: ['category', 'name'],
       key: 'category.name',
-      width: '25%'
+      width: '25%',
+      sorter: {
+        compare: (a: any, b: any) => a.category.name - b.category.name,
+      },
     },
     {
       title: 'Harga',
@@ -33,6 +42,9 @@ const TableProduct = ({ data, onDelete, onView, loading }: TableProductType) => 
       key: 'price',
       width: '25%',
       render: (price: string) => currency(Number(price)),
+      sorter: {
+        compare: (a: any, b: any) => a.price - b.price,
+      },
     },
   ]
 

@@ -3,10 +3,7 @@ import { base_url } from "../constants/env";
 
 const axiosInstance = axios.create({
   baseURL: base_url,
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  withCredentials: true
 });
 
 axiosInstance.interceptors.request.use(

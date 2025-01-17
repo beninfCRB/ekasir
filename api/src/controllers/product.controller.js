@@ -1,8 +1,9 @@
 import { validationResult } from "express-validator";
-import { prisma } from "../utils/prisma.util.js";
+import moment from 'moment';
 import { PREFIX } from "../constants/code.constant.js";
+import { cloudinaryDelete, cloudinaryReUpload, cloudinaryUpload } from "../utils/cloudinary.js";
+import { prisma } from "../utils/prisma.util.js";
 import { getCurrentUser } from "../utils/user.js";
-import moment from 'moment'
 
 export const getProducts = async (req, res, next) => {
   try {
@@ -39,54 +40,75 @@ export const getProduct = async (req, res, next) => {
 
 export const createProduct = async (req, res, next) => {
   try {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
+    return await prisma.$transaction(async (model) => {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
 
-    const { name, price, categoryId } = req.body
+      const { name, price, categoryId } = req.body
 
-    const code = PREFIX.PRODUCT + new Date().getTime().toString()
-    const userId = (await getCurrentUser(req)).id
+      const code = PREFIX.PRODUCT + new Date().getTime().toString()
+      const userId = (await getCurrentUser(req)).id
 
-    const data = await prisma.product.create({
-      data: {
-        code,
-        name,
-        price,
-        categoryId,
-        createdBy: userId,
-        updatedBy: userId
-      }
+      const { imageId, imageUrl } = await cloudinaryUpload(req.files.file)
+
+      const data = await model.product.create({
+        data: {
+          code,
+          name,
+          price,
+          categoryId,
+          imageId,
+          imageUrl,
+          createdBy: userId,
+          updatedBy: userId
+        }
+      })
+
+
+      res.status(201).json({ data, message: 'Data berhasil dibuat' })
     })
-
-    res.status(201).json({ data, message: 'Data berhasil dibuat' })
   } catch (error) {
-    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
+    console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`)
     res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
 export const updateProduct = async (req, res, next) => {
   try {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
+    return await prisma.$transaction(async (model) => {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
 
-    const { name, price, categoryId } = req.body
+      const { name, price, categoryId } = req.body
 
-    const userId = (await getCurrentUser(req)).id
+      const userId = (await getCurrentUser(req)).id
 
-    const data = await prisma.product.update({
-      where: {
-        id: req.params.id
-      },
-      data: {
-        name,
-        price,
-        categoryId,
-        updatedBy: userId
-      }
+      const exist = await model.product.findFirst({
+        where: {
+          id: req.params.id
+        }
+      })
+
+      const { imageId, imageUrl } = await cloudinaryReUpload(exist.imageId, req.files.file)
+
+      const data = await model.product.update({
+        where: {
+          id: req.params.id
+        },
+        data: {
+          name,
+          price,
+          categoryId,
+          imageId,
+          imageUrl,
+          updatedBy: userId
+        }
+      })
+
+      if (!data) await await cloudinaryDelete(exist.imageId)
+
+      res.status(201).json({ data, message: 'Data berhasil diubah' })
     })
-
-    res.status(201).json({ data, message: 'Data berhasil diubah' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })
@@ -95,13 +117,19 @@ export const updateProduct = async (req, res, next) => {
 
 export const deleteProduct = async (req, res, next) => {
   try {
-    const data = await prisma.product.delete({
-      where: {
-        id: req.params.id
-      }
-    })
+    return await prisma.$transaction(async (model) => {
+      const data = await model.product.delete({
+        where: {
+          id: req.params.id
+        }
+      })
 
-    res.status(200).json({ data, message: 'Data berhasil dihapus' })
+      if (data) {
+        await cloudinaryDelete(data.imageId)
+      }
+
+      res.status(200).json({ data, message: 'Data berhasil dihapus' })
+    })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     res.status(500).json({ data: null, message: 'Gagal!!' })

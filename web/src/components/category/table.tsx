@@ -13,19 +13,28 @@ const TableCategory = ({ data, onDelete, onView, loading }: TableCategoryType) =
       dataIndex: 'code',
       key: 'code',
       width: '30%',
+      sorter: {
+        compare: (a: any, b: any) => a.code - b.code,
+      },
     },
     {
       title: 'Nama Kategori',
       dataIndex: 'name',
       key: 'name',
       width: '30%',
+      sorter: {
+        compare: (a: any, b: any) => a.name - b.name,
+      },
     },
     {
       title: 'Keterangan',
       dataIndex: 'desc',
       key: 'desc',
       width: '30%',
-      render: (desc: string | null) => desc ? desc : '-'
+      render: (desc: string | null) => desc ? desc : '-',
+      sorter: {
+        compare: (a: any, b: any) => a.desc - b.desc,
+      },
     },
   ]
 

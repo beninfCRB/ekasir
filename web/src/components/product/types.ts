@@ -5,6 +5,9 @@ export interface productType {
   code?: string;
   name?: string;
   price?: string;
+  categoryId?: string;
+  imageId?: string;
+  imageUrl?: string;
   createdAt?: Date;
   updatedAt?: Date;
 

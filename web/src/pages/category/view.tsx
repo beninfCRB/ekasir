@@ -56,7 +56,7 @@ export default function ViewCategory() {
     {
       key: '3',
       label: 'Keterangan Kategori',
-      children: data.desc,
+      children: data.desc ? data.desc : '-',
     }
   ] : [];
 

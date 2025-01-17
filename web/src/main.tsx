@@ -17,7 +17,10 @@ createRoot(document.getElementById('root')!).render(
           Table: {
             headerBg: '#3d84f0',
             rowHoverBg: '#f3f3f3',
-            headerColor: 'white'
+            headerColor: 'white',
+            headerSortActiveBg: '#3d84f0',
+            headerSortHoverBg: '#3d84f0',
+            bodySortBg: 'white',
           },
         },
       }}

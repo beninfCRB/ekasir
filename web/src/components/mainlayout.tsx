@@ -1,4 +1,4 @@
-import { ContainerOutlined, DollarOutlined, FileDoneOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, ProductOutlined, StockOutlined, TransactionOutlined } from "@ant-design/icons";
+import { ContainerOutlined, DollarOutlined, FileDoneOutlined, HomeOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, ProductOutlined, StockOutlined, TransactionOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, MenuProps, message, theme } from "antd";
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
@@ -6,6 +6,7 @@ import { base_url } from "../constants/env";
 import { ProtectedRoute } from "../pages/protected-route";
 import axiosInstance, { setupAxiosInterceptors } from "../utils/axios";
 import TooltipButton from "./button/toolltip";
+import { catchError } from "../utils/catch-error";
 
 const { Header, Content, Sider } = Layout;
 
@@ -31,8 +32,12 @@ export default function MainLayout() {
       message.success('Berhasil Sign Out')
       navigate('/signin', { replace: true })
     } catch (error) {
-      console.error("Error signing out:", error)
+      catchError(error, message)
     }
+  }
+
+  const onHome = () => {
+    navigate('/')
   }
 
   return (
@@ -87,10 +92,20 @@ export default function MainLayout() {
                 height: 64,
               }}
             />
-            <div className="flex border items-stretch gap-2">
+            <div className="flex border items-stretch gap-8">
               <div className="font-bold italic text-slate-400 text-lg">
                 {locale && locale.username}
               </div>
+              <TooltipButton
+                title="Home"
+                text="Home"
+                textSize="xs"
+                icon={<HomeOutlined />}
+                type="default"
+                shape="circle"
+                size="small"
+                onCLick={onHome}
+              />
               <TooltipButton
                 title="Sign Out"
                 text="Sign Out"
