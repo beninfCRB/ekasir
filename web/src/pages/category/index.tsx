@@ -8,6 +8,7 @@ import TableCategory from "../../components/category/table"
 import { categoryType } from '../../components/category/types'
 import { base_url } from "../../constants/env"
 import axiosInstance from "../../utils/axios"
+import { catchError } from "../../utils/catch-error"
 
 
 const Category = () => {
@@ -25,8 +26,8 @@ const Category = () => {
       }
 
       setData(response.data?.data as categoryType[])
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
     }
@@ -39,8 +40,8 @@ const Category = () => {
       if (!response.data?.data) {
         message.error(response.data?.message)
       }
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
       getData()

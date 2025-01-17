@@ -5,6 +5,7 @@ import { categoryType } from "./types"
 import axiosInstance from "../../utils/axios"
 import { base_url } from "../../constants/env"
 import { Select, SelectItem } from "../select"
+import { catchError } from "../../utils/catch-error"
 
 interface SelecCategory extends SelectType { }
 
@@ -21,8 +22,8 @@ export default function SelectCategory({ loading, placeholder, ...props }: Selec
       }
 
       setData(response.data?.data as categoryType[])
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
     }

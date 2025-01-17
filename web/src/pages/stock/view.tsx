@@ -8,6 +8,7 @@ import { stockType } from "../../components/stock/types";
 import { base_url } from "../../constants/env";
 import axiosInstance from "../../utils/axios";
 import moment from "moment";
+import { catchError } from "../../utils/catch-error";
 
 export default function ViewStock() {
   const [data, setData] = useState<stockType | null>(null)
@@ -28,7 +29,7 @@ export default function ViewStock() {
 
       setData(response.data?.data)
     } catch (error: any) {
-      message.error(error.message)
+      catchError(error, message)
     } finally {
       setLoading(false)
     }

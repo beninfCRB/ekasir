@@ -8,6 +8,7 @@ import TableTax from "../../components/tax/table"
 import { taxType } from '../../components/tax/types'
 import { base_url } from "../../constants/env"
 import axiosInstance from "../../utils/axios"
+import { catchError } from "../../utils/catch-error"
 
 
 const Tax = () => {
@@ -25,8 +26,8 @@ const Tax = () => {
       }
 
       setData(response.data?.data as taxType[])
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
     }
@@ -39,8 +40,8 @@ const Tax = () => {
       if (!response.data?.data) {
         message.error(response.data?.message)
       }
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
       getData()

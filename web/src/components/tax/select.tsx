@@ -5,6 +5,7 @@ import { taxType } from "./types"
 import axiosInstance from "../../utils/axios"
 import { base_url } from "../../constants/env"
 import { Select, SelectItem } from "../select"
+import { catchError } from "../../utils/catch-error"
 
 interface SelecTax extends SelectType { }
 
@@ -21,8 +22,8 @@ export default function SelectTax({ loading, placeholder, ...props }: SelecTax) 
       }
 
       setData(response.data?.data as taxType[])
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
     }

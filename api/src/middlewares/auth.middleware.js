@@ -1,6 +1,7 @@
 import { prisma } from "../utils/prisma.util.js"
 import jwt from "jsonwebtoken"
 import 'dotenv/config'
+import { verifyToken } from "../utils/token.util.js";
 
 export const isAuthenticated = async (req, res, next) => {
   let token = req.headers['authorization'];
@@ -24,7 +25,7 @@ export const isAuthenticated = async (req, res, next) => {
 
 
   try {
-    const decoded = jwt.verify(token, process.env.ACCESS_KEY);
+    const decoded = await verifyToken(token, process.env.ACCESS_KEY);
     if (!decoded) {
       return next(res.status(403).json({ data: null, message: 'Token tidak valid!' }));
     }
@@ -43,6 +44,6 @@ export const isAuthenticated = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("Error verifying token:", error);
-    return next(res.status(500).json({ data: null, message: 'Token tidak valid!' }))
+    return next(res.status(403).json({ data: null, message: 'Token tidak valid!' }))
   }
 };

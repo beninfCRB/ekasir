@@ -9,6 +9,7 @@ import { base_url } from "../../constants/env";
 import axiosInstance from "../../utils/axios";
 import { currency } from "../../utils/rupiah";
 import DescriptionSelling from "../../components/selling/description";
+import { catchError } from "../../utils/catch-error";
 
 export default function ViewSelling() {
   const [data, setData] = useState<sellingType | null>(null)
@@ -29,7 +30,7 @@ export default function ViewSelling() {
 
       setData(response.data?.data)
     } catch (error: any) {
-      message.error(error.message)
+      catchError(error, message)
     } finally {
       setLoading(false)
     }

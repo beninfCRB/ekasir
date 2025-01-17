@@ -5,6 +5,7 @@ import { generateBreadcrumbItems } from "../../components/breadcrumb";
 import FormSellingItem from "../../components/selling-item/form";
 import { base_url } from "../../constants/env";
 import axiosInstance from "../../utils/axios";
+import { catchError } from "../../utils/catch-error";
 
 interface AddSellingItemType {
   id?: string,
@@ -34,11 +35,7 @@ export default function AddSellingItem({ id, setTab, onRefresh }: AddSellingItem
       onRefresh()
       message.success(response.data?.message)
     } catch (error: any) {
-      if (error.status === 422 && Array.isArray(error.response.data.message)) {
-        error.response.data.message.map((v: any) => message.error(v.msg))
-      } else {
-        message.error(error.response.data.message)
-      }
+      catchError(error, message)
     } finally {
       setTab('selling')
       setLoading(false)

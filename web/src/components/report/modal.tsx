@@ -7,6 +7,7 @@ import { base_url } from "../../constants/env"
 import axiosInstance from "../../utils/axios"
 import TooltipButton from "../button/toolltip"
 import jsPDF from "jspdf"
+import { catchError } from "../../utils/catch-error"
 
 interface ModalReportType {
   id: string
@@ -49,11 +50,7 @@ export const ModalReport = ({ id, isModalOpen, setModalOpen }: ModalReportType) 
 
       setData(response.data?.data as sellingType)
     } catch (error: any) {
-      if (error.status === 422 && Array.isArray(error.response.data.message)) {
-        error.response.data.message.map((v: any) => message.error(v.msg))
-      } else {
-        message.error(error.response.data.message)
-      }
+      catchError(error, message)
     } finally {
       setLoading(false)
     }

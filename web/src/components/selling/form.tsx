@@ -61,23 +61,31 @@ export default function FormSelling({ form, onSave, onCancel, loading, asEdit }:
           {...span}
         >
           <Form.Item
-            label='Bayar Tunai'
-            name={'cashPrice'}
-            hasFeedback
-            rules={[
-              {
-                required: true,
-                message: 'Masukan Bayar Tunai'
-              }
-            ]}
+            noStyle
+            shouldUpdate={(prev, next) => prev.cashPrice !== next.cashPrice}
           >
-            <InputNumber
-              className='w-full'
-              addonBefore='Rp.'
-              placeholder='Masukan Bayar Tunai'
-              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              parser={value => value!.replace(/Rp\s?|(,*)/g, '')}
-            />
+            {({ getFieldValue }) =>
+              <Form.Item
+                label='Bayar Tunai'
+                name={'cashPrice'}
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: 'Masukan Bayar Tunai'
+                  }
+                ]}
+              >
+                <InputNumber
+                  disabled={getFieldValue('cashPrice') > 0 ? true : false}
+                  className='w-full'
+                  addonBefore='Rp.'
+                  placeholder='Masukan Bayar Tunai'
+                  formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  parser={value => value!.replace(/Rp\s?|(,*)/g, '')}
+                />
+              </Form.Item>
+            }
           </Form.Item>
           <Form.Item
             label='Uang Kembali'

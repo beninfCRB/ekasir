@@ -5,6 +5,7 @@ import { stockType } from "./types"
 import axiosInstance from "../../utils/axios"
 import { base_url } from "../../constants/env"
 import { Select, SelectItem } from "../select"
+import { catchError } from "../../utils/catch-error"
 
 interface SelecStock extends SelectType { }
 
@@ -21,8 +22,8 @@ export default function SelectStock({ loading, placeholder, ...props }: SelecSto
       }
 
       setData(response.data?.data as stockType[])
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
     }
@@ -43,7 +44,7 @@ export default function SelectStock({ loading, placeholder, ...props }: SelecSto
       {
         data.map((value, i) => (
           <SelectItem.Option key={i} value={value.id}>
-            {value.produk?.name} ( {value.amount} )
+            {value.product?.name} ( {value.amount} )
           </SelectItem.Option>
         ))
       }

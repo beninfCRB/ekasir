@@ -5,6 +5,7 @@ import { productType } from "./types"
 import axiosInstance from "../../utils/axios"
 import { base_url } from "../../constants/env"
 import { Select, SelectItem } from "../select"
+import { catchError } from "../../utils/catch-error"
 
 interface SelecProduct extends SelectType { }
 
@@ -21,8 +22,8 @@ export default function SelectProduct({ loading, placeholder, ...props }: SelecP
       }
 
       setData(response.data?.data as productType[])
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
     }

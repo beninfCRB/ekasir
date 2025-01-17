@@ -7,6 +7,7 @@ import { currency } from '../../utils/rupiah';
 import { sellingItemType } from './types';
 import { DeleteOutlined } from '@ant-design/icons';
 import TooltipButton from '../button/toolltip';
+import { catchError } from '../../utils/catch-error';
 
 const ContainerHeight = 250
 
@@ -25,8 +26,8 @@ export default function ListSellingItem({ id }: { id?: string }) {
 
       setData(response.data?.data as sellingItemType[])
       setLoading(false)
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
     }
@@ -39,8 +40,8 @@ export default function ListSellingItem({ id }: { id?: string }) {
       if (!response.data?.data) {
         message.error(response.data?.message)
       }
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setDeleted(undefined)
       setLoading(false)

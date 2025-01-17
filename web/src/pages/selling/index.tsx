@@ -8,6 +8,7 @@ import TableSelling from "../../components/selling/table"
 import { sellingType } from '../../components/selling/types'
 import { base_url } from "../../constants/env"
 import axiosInstance from "../../utils/axios"
+import { catchError } from "../../utils/catch-error"
 
 
 const Selling = () => {
@@ -26,8 +27,8 @@ const Selling = () => {
       }
 
       setData(response.data?.data as sellingType[])
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
     }
@@ -40,8 +41,8 @@ const Selling = () => {
       if (!response.data?.data) {
         message.error(response.data?.message)
       }
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
       getData()
@@ -61,11 +62,7 @@ const Selling = () => {
       navigate(`/admin/selling/edit/${response.data?.data?.id}`)
       message.success(response.data?.message)
     } catch (error: any) {
-      if (error.status === 422 && Array.isArray(error.response.data.message)) {
-        error.response.data.message.map((v: any) => message.error(v.msg))
-      } else {
-        message.error(error.response.data.message)
-      }
+      catchError(error, message)
     } finally {
       setCreate(false)
       setLoading(false)

@@ -8,6 +8,7 @@ import TableStock from "../../components/stock/table"
 import { stockType } from '../../components/stock/types'
 import { base_url } from "../../constants/env"
 import axiosInstance from "../../utils/axios"
+import { catchError } from "../../utils/catch-error"
 
 
 const Stock = () => {
@@ -25,8 +26,8 @@ const Stock = () => {
       }
 
       setData(response.data?.data as stockType[])
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
     }
@@ -39,8 +40,8 @@ const Stock = () => {
       if (!response.data?.data) {
         message.error(response.data?.message)
       }
-    } catch (err: any) {
-      message.error(err.message)
+    } catch (error: any) {
+      catchError(error, message)
     } finally {
       setLoading(false)
       getData()

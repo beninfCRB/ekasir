@@ -7,6 +7,7 @@ import TooltipButton from "../../components/button/toolltip";
 import FormCategory from "../../components/category/form";
 import { base_url } from "../../constants/env";
 import axiosInstance from "../../utils/axios";
+import { catchError } from "../../utils/catch-error";
 
 export default function AddCategory() {
   const [form] = Form.useForm()
@@ -28,11 +29,7 @@ export default function AddCategory() {
       navigate(`/admin/category/edit/${response.data?.data?.id}`)
       message.success(response.data?.message)
     } catch (error: any) {
-      if (error.status === 422 && Array.isArray(error.response.data.message)) {
-        error.response.data.message.map((v: any) => message.error(v.msg))
-      } else {
-        message.error(error.response.data.message)
-      }
+      catchError(error, message)
     } finally {
       setLoading(false)
     }

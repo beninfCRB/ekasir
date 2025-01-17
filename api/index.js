@@ -12,6 +12,7 @@ import sellingItemRoute from './src/routes/selling-item.route.js'
 import stockRoute from './src/routes/stock.route.js'
 import expressListRoutes from 'express-list-routes'
 import reportRoute from './src/routes/report.route.js'
+import moment from 'moment'
 
 const app = express()
 let port = Number(process.env.APP_PORT)
@@ -49,7 +50,7 @@ app.use('/api/v1',
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500
-  console.log(`[${new Date.toString()}] ${err.message}`)
+  console.log(`[${moment().format('DD/MM/YYYY')}] ${err.message}`)
   res.status(statusCode).json({ message: err.message })
 })
 

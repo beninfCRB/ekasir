@@ -7,6 +7,7 @@ import TooltipButton from "../../components/button/toolltip";
 import { categoryType } from "../../components/category/types";
 import { base_url } from "../../constants/env";
 import axiosInstance from "../../utils/axios";
+import { catchError } from "../../utils/catch-error";
 
 export default function ViewCategory() {
   const [data, setData] = useState<categoryType | null>(null)
@@ -27,7 +28,7 @@ export default function ViewCategory() {
 
       setData(response.data?.data)
     } catch (error: any) {
-      message.error(error.message)
+      catchError(error, message)
     } finally {
       setLoading(false)
     }

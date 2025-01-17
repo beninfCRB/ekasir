@@ -8,6 +8,7 @@ import { productType } from "../../components/product/types";
 import { base_url } from "../../constants/env";
 import axiosInstance from "../../utils/axios";
 import { currency } from "../../utils/rupiah";
+import { catchError } from "../../utils/catch-error";
 
 export default function ViewProduct() {
   const [data, setData] = useState<productType | null>(null)
@@ -28,7 +29,7 @@ export default function ViewProduct() {
 
       setData(response.data?.data)
     } catch (error: any) {
-      message.error(error.message)
+      catchError(error, message)
     } finally {
       setLoading(false)
     }
