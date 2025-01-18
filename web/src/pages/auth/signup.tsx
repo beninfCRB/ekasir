@@ -5,6 +5,7 @@ import { FormSignUp } from '../../components/auth/signup/form'
 import { signupType } from '../../components/auth/signup/types'
 import { base_url } from '../../constants/env'
 import axiosInstance from '../../utils/axios'
+import { catchError } from '../../utils/catch-error'
 
 export default function SignUp() {
   const [form] = Form.useForm()
@@ -32,7 +33,7 @@ export default function SignUp() {
 
       setData(response.data?.data)
     } catch (error: any) {
-      message.error(error.message)
+      catchError(error, message)
     } finally {
       setLoading(false)
     }

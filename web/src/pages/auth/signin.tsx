@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router'
 import axiosInstance from '../../utils/axios'
 import { signinType } from '../../components/auth/signin/types'
 import { ProtectedRoute } from '../protected-route'
+import { catchError } from '../../utils/catch-error'
 
 export default function Signin() {
   const [form] = Form.useForm()
@@ -33,7 +34,7 @@ export default function Signin() {
 
       setData(response.data?.data)
     } catch (error: any) {
-      message.error(error.message)
+      catchError(error, message)
     } finally {
       setLoading(false)
     }
