@@ -51,9 +51,13 @@ export default function FormSelling({ form, onSave, onCancel, loading, asEdit }:
               }
             ]}
           >
-            <Input
-              disabled={asEdit}
+            <InputNumber
+              disabled
+              className='w-full'
+              addonBefore='Rp.'
               placeholder='Masukan Grand Total'
+              formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              parser={value => value!.replace(/Rp\s?|(,*)/g, '')}
             />
           </Form.Item>
         </Col>

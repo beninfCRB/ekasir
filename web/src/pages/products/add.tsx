@@ -59,10 +59,10 @@ export default function AddProduct() {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-2">
       <Breadcrumb items={generateBreadcrumbItems(location.pathname)} />
       <Card
-        className={`shadow-md shadow-blue-400`}
+        className={`w-2/3 shadow-md shadow-blue-400 self-center`}
         title='TAMBAH PRODUK'
         extra={
           <div className="flex flex-row gap-2 my-4">
