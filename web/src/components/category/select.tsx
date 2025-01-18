@@ -16,7 +16,7 @@ export default function SelectCategory({ loading, placeholder, ...props }: Selec
   const getData = useCallback(async () => {
     setLoading(true)
     try {
-      const response = await axiosInstance.get(`${base_url}/api/v1/categorys`)
+      const response = await axiosInstance.get(`${base_url}/api/v1/categories`)
       if (!response.data?.data) {
         message.error(response.data?.message)
       }

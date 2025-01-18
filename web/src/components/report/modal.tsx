@@ -1,12 +1,11 @@
 import { CloseCircleOutlined, PrinterOutlined } from "@ant-design/icons"
 import { message, Modal, Skeleton } from "antd"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import TemplateReport from "../../components/report/template"
 import { sellingType } from '../../components/selling/types'
 import { base_url } from "../../constants/env"
 import axiosInstance from "../../utils/axios"
 import TooltipButton from "../button/toolltip"
-import jsPDF from "jspdf"
 import { catchError } from "../../utils/catch-error"
 
 interface ModalReportType {
@@ -18,32 +17,52 @@ interface ModalReportType {
 export const ModalReport = ({ id, isModalOpen, setModalOpen }: ModalReportType) => {
   const [data, setData] = useState<sellingType>()
   const [isLoading, setLoading] = useState(false)
-  const reportTemplateRef = useRef(null)
+  const [isGenerating, setGenerating] = useState(false)
 
   const handleGeneratePdf = async () => {
-    if (!reportTemplateRef.current) return
-    const doc = new jsPDF({
-      format: 'A4',
-      unit: 'mm',
-      orientation: 'portrait'
-    })
+    try {
+      setGenerating(true)
+      const response = await axiosInstance.get(`${base_url}/api/v1/report/generate/pdf/${id}`, {
+        responseType: 'blob',
+        headers: {
+          'Accept': 'application/pdf'
+        },
+        timeout: 30000 
+      })
+      
+      if (response.headers['content-type'] !== 'application/pdf') {
+        throw new Error('Server did not return a PDF')
+      }
 
-    doc.html(reportTemplateRef.current, {
-      html2canvas: {
-        scale: 0.2,
-      },
-      callback: async () => {
-        await doc.save(`${data?.code}.pdf`)
-      },
-      x: 10,
-      y: 10,
-    })
+      const blob = new Blob([response.data], { type: 'application/pdf' })
+      
+      const url = window.URL.createObjectURL(blob)
+      
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `laporan-${data?.code}.pdf`)
+      
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url)
+      }, 100)
+
+      message.success('PDF berhasil di generate')
+    } catch (error: any) {
+      console.error('PDF Generation Error:', error)
+      message.error(error.response?.data?.message || 'Gagal generate PDF')
+    } finally {
+      setGenerating(false)
+    }
   }
 
   const getData = useCallback(async () => {
     setLoading(true)
     try {
-      const response = await axiosInstance.get(`${base_url}/api/v1/report/${id}`)
+      const response = await axiosInstance.get(`${base_url}/api/v1/report/selling/${id}`)
       if (!response.data?.data) {
         message.error(response.data?.message)
       }
@@ -64,13 +83,9 @@ export const ModalReport = ({ id, isModalOpen, setModalOpen }: ModalReportType) 
     setModalOpen(false)
   }
 
-  const onGenerate = () => {
-    handleGeneratePdf()
-  }
-
   return (
     <Modal width={'1000px'} title="CETAK" open={isModalOpen} onCancel={onCancel} footer={[
-      <div className="flex flex-row gap-2 my-4 justify-end mt-8">
+      <div key="footer" className="flex flex-row gap-2 my-4 justify-end mt-8">
         <TooltipButton
           title="Generate PDF"
           text="Generate PDF"
@@ -78,7 +93,8 @@ export const ModalReport = ({ id, isModalOpen, setModalOpen }: ModalReportType) 
           type="default"
           shape="circle"
           size="middle"
-          onCLick={onGenerate}
+          loading={isGenerating}
+          onCLick={handleGeneratePdf}
         />
         <TooltipButton
           title="Tutup"
@@ -94,7 +110,7 @@ export const ModalReport = ({ id, isModalOpen, setModalOpen }: ModalReportType) 
       {
         isLoading ?
           <Skeleton /> :
-          <TemplateReport data={data as sellingType} template={reportTemplateRef} />
+          <TemplateReport data={data as sellingType}/>
       }
     </Modal>
   )

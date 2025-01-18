@@ -5,7 +5,8 @@ import categoryDto from "../dtos/category.dto.js";
 
 const categoryRoute = Router()
 
-categoryRoute.get('/categorys', isAuthenticated, getCategorys)
+categoryRoute.get('/categories/public', getCategorys)
+categoryRoute.get('/categories', isAuthenticated, getCategorys)
 categoryRoute.get('/category/:id', isAuthenticated, getCategory)
 categoryRoute.post('/category', isAuthenticated, categoryDto, createCategory)
 categoryRoute.put('/category/:id', isAuthenticated, categoryDto, updateCategory)

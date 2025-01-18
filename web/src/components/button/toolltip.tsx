@@ -3,6 +3,7 @@ import React from "react";
 
 interface TooltipButtonType {
   title?: string
+  loading?:boolean
   type?: "default" | "link" | "text" | "primary" | "dashed" | undefined
   text?: string
   textSize?: "xs" | "md" | "lg" | "xl" | "2xl"
@@ -12,10 +13,10 @@ interface TooltipButtonType {
   onCLick?: () => void
 }
 
-export default function TooltipButton({ title, text, textSize, type, shape, size, icon, onCLick }: TooltipButtonType) {
+export default function TooltipButton({ title, text, textSize, type, shape, size, icon, loading,onCLick }: TooltipButtonType) {
   return (
     <Tooltip className="flex flex-col justify-center items-center" title={title}>
-      <Button type={type || "primary"} shape={shape} size={size || "small"} icon={icon} onClick={onCLick} />
+      <Button loading={loading} type={type || "primary"} shape={shape} size={size || "small"} icon={icon} onClick={onCLick} />
       <span className={`text-gray-500 ${textSize && `text-${textSize}`}`}>{text}</span>
     </Tooltip>
   )

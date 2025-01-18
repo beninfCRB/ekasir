@@ -3,10 +3,9 @@ import DescriptionSelling from '../selling/description'
 import { sellingType } from '../selling/types'
 import moment from 'moment'
 
-export default function TemplateReport({ data, template }: { data: sellingType; template: React.RefObject<HTMLDivElement> }) {
+export default function TemplateReport({ data }: { data: sellingType}) {
   return (
     <div
-      ref={template}
       style={{
         marginLeft: '5rem',
         marginRight: '5rem',
