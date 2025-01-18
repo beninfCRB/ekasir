@@ -27,7 +27,7 @@ export default function Home() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axiosInstance.get(`${base_url}/api/v1/categories`)
+      const response = await axiosInstance.get(`${base_url}/api/v1/categories/public`)
       setCategories(response.data?.data || [])
     } catch (error) {
       message.error('Gagal memuat kategori')
