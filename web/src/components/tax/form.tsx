@@ -24,6 +24,7 @@ export default function FormTax({ form, onSave, onCancel, asEdit, loading }: For
         ]}
       >
         <Input
+          disabled={loading}
           placeholder='Masukan Nama Pajak'
         />
       </Form.Item>
@@ -39,6 +40,7 @@ export default function FormTax({ form, onSave, onCancel, asEdit, loading }: For
         ]}
       >
         <InputNumber
+          disabled={loading}
           className="w-full"
           addonAfter='%'
           placeholder='Masukan Besaran Pajak'
@@ -56,6 +58,7 @@ export default function FormTax({ form, onSave, onCancel, asEdit, loading }: For
         ]}
       >
         <Input.TextArea
+          disabled={loading}
           rows={2}
           placeholder='Masukan Keterangan Pajak'
         />

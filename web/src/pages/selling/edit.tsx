@@ -40,7 +40,7 @@ export default function EditSelling() {
 
   useEffect(() => {
     getData()
-  }, [id])
+  }, [id,tab])
 
   const onSubmit = async () => {
     setLoading(true)
@@ -112,25 +112,23 @@ export default function EditSelling() {
           <TabsMod
             key={'tabsSellingItem'}
             defaultActiveKey={tab}
+            active={tab as string}
+            onChange={(activeKey) => setTab(activeKey)}
             size='large'
             items={[
               {
                 key: 'selling',
                 label: 'HEAD',
-                children: <div
-                  onClick={() => setTab('selling')}
-                >
+                children: <div>
                   <FormSelling form={form} onSave={onSubmit} onCancel={onCancel} loading={isLoading} asEdit={id ? true : false} />
                   <Divider plain style={{ fontWeight: 'bold' }}>DAFTAR ITEM</Divider>
-                  <ListSellingItem id={id} />
+                  <ListSellingItem id={id} tab={tab} />
                 </div>
               },
               {
                 key: 'selling-item',
                 label: 'ITEM',
-                children: <div
-                  onClick={() => setTab('selling-item')}
-                >
+                children: <div>
                   <AddSellingItem id={id} setTab={setTab} onRefresh={onRefresh} />
                 </div>
               }

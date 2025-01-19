@@ -14,10 +14,10 @@ export const getProducts = async (req, res, next) => {
       }
     })
 
-    res.status(200).json({ data, message: 'Data berhasil dimuat' })
+   return res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+   return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
@@ -32,10 +32,10 @@ export const getProduct = async (req, res, next) => {
       }
     })
 
-    res.status(200).json({ data, message: 'Data berhasil dimuat' })
+   return res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
@@ -43,7 +43,7 @@ export const createProduct = async (req, res, next) => {
   try {
     return await prisma.$transaction(async (model) => {
       const errors = validationResult(req)
-      if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
+      if (!errors.isEmpty()) return res.status(422).json({ data: null, message: errors.array() })
 
       const { name, price, categoryId } = req.body
 
@@ -66,11 +66,11 @@ export const createProduct = async (req, res, next) => {
       })
 
 
-      res.status(201).json({ data, message: 'Data berhasil dibuat' })
+     return res.status(201).json({ data, message: 'Data berhasil dibuat' })
     })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`)
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
@@ -78,7 +78,7 @@ export const updateProduct = async (req, res, next) => {
   try {
     return await prisma.$transaction(async (model) => {
       const errors = validationResult(req)
-      if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
+      if (!errors.isEmpty()) return res.status(422).json({ data: null, message: errors.array() })
 
       const { name, price, categoryId } = req.body
 
@@ -106,13 +106,13 @@ export const updateProduct = async (req, res, next) => {
         }
       })
 
-      if (!data) await await cloudinaryDelete(exist.imageId)
+      if (!data) await cloudinaryDelete(exist.imageId)
 
-      res.status(201).json({ data, message: 'Data berhasil diubah' })
+     return res.status(201).json({ data, message: 'Data berhasil diubah' })
     })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+   return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
@@ -129,10 +129,10 @@ export const deleteProduct = async (req, res, next) => {
         await cloudinaryDelete(data.imageId)
       }
 
-      res.status(200).json({ data, message: 'Data berhasil dihapus' })
+     return res.status(200).json({ data, message: 'Data berhasil dihapus' })
     })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }

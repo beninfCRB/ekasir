@@ -24,6 +24,7 @@ export default function FormCategory({ form, onSave, onCancel, asEdit, loading }
         ]}
       >
         <Input
+          disabled={loading}
           placeholder='Masukan Nama Kategori'
         />
       </Form.Item>
@@ -39,6 +40,7 @@ export default function FormCategory({ form, onSave, onCancel, asEdit, loading }
         ]}
       >
         <Input.TextArea
+          disabled={loading}
           rows={2}
           placeholder='Masukan Keterangan Kategori'
         />

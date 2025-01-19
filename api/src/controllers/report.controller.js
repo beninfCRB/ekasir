@@ -22,10 +22,12 @@ export const reportSelling = async (req, res, next) => {
       }
     })
 
-    res.status(200).json({ data, message: 'Data berhasil dimuat' })
+    if(!data.cashPrice) return res.status(500).json({ message: 'Data tidak ditemukan' })
+
+    return res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
@@ -164,10 +166,10 @@ export const reportGeneratePdf = async (req, res) => {
     res.setHeader('Content-Disposition', `attachment; filename=laporan-${data.code}.pdf`)
     res.setHeader('Content-Length', pdf.length)
     
-    res.end(pdf)
+    return res.end(pdf)
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`)
-    res.status(500).json({ message: 'Gagal generate PDF!' })
+    return res.status(500).json({ message: 'Gagal generate PDF!' })
   } finally {
     if (browser) {
       await browser.close()

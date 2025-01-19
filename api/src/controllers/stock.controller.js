@@ -11,10 +11,10 @@ export const getStocks = async (req, res, next) => {
       }
     })
 
-    res.status(200).json({ data, message: 'Data berhasil dimuat' })
+   return res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
@@ -29,17 +29,17 @@ export const getStock = async (req, res, next) => {
       }
     })
 
-    res.status(200).json({ data, message: 'Data berhasil dimuat' })
+   return res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+   return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
 export const createStock = async (req, res, next) => {
   try {
     const errors = validationResult(req)
-    if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
+    if (!errors.isEmpty()) return res.status(422).json({ data: null, message: errors.array() })
 
     const { code, productId, amount, expiredAt } = req.body
 
@@ -56,17 +56,17 @@ export const createStock = async (req, res, next) => {
       }
     })
 
-    res.status(201).json({ data, message: 'Data berhasil dibuat' })
+   return res.status(201).json({ data, message: 'Data berhasil dibuat' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+   return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
 export const updateStock = async (req, res, next) => {
   try {
     const errors = validationResult(req)
-    if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
+    if (!errors.isEmpty())return res.status(422).json({ data: null, message: errors.array() })
 
     const { code, productId, amount, expiredAt } = req.body
 
@@ -85,10 +85,10 @@ export const updateStock = async (req, res, next) => {
       }
     })
 
-    res.status(201).json({ data, message: 'Data berhasil diubah' })
+   return res.status(201).json({ data, message: 'Data berhasil diubah' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+   return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
@@ -100,9 +100,9 @@ export const deleteStock = async (req, res, next) => {
       }
     })
 
-    res.status(200).json({ data, message: 'Data berhasil dihapus' })
+   return res.status(200).json({ data, message: 'Data berhasil dihapus' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }

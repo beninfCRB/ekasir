@@ -8,10 +8,10 @@ export const getSellings = async (req, res, next) => {
   try {
     const data = await prisma.selling.findMany()
 
-    res.status(200).json({ data, message: 'Data berhasil dimuat' })
+    return res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
@@ -23,10 +23,10 @@ export const getSelling = async (req, res, next) => {
       }
     })
 
-    res.status(200).json({ data, message: 'Data berhasil dimuat' })
+   return res.status(200).json({ data, message: 'Data berhasil dimuat' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
@@ -45,11 +45,10 @@ export const createSelling = async (req, res, next) => {
 
     console.log(data);
 
-
-    res.status(201).json({ data, message: 'Data berhasil dibuat' });
+    return res.status(201).json({ data, message: 'Data berhasil dibuat' });
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' });
+    return res.status(500).json({ data: null, message: 'Gagal!!' });
   }
 };
 
@@ -57,7 +56,7 @@ export const updateSelling = async (req, res, next) => {
   try {
     return await prisma.$transaction(async (model) => {
       const errors = validationResult(req)
-      if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
+      if (!errors.isEmpty()) return res.status(422).json({ data: null, message: errors.array() })
 
       const { cashPrice } = req.body
 
@@ -69,9 +68,9 @@ export const updateSelling = async (req, res, next) => {
         }
       })
 
-      if (!exist) res.status(500).json({ data: null, message: 'Data penjualan tidak ditemukan' })
+      if (!exist) return res.status(500).json({ data: null, message: 'Data penjualan tidak ditemukan' })
 
-      if (exist.grandTotal > cashPrice) res.status(500).json({ data: null, message: 'Uang tunai tidak cukup' })
+      if (exist.grandTotal > cashPrice) return res.status(500).json({ data: null, message: 'Uang tunai tidak cukup' })
 
       const returnPrice = cashPrice - exist.grandTotal
 
@@ -86,11 +85,11 @@ export const updateSelling = async (req, res, next) => {
         }
       })
 
-      res.status(201).json({ data, message: 'Data berhasil diubah' })
+      return res.status(201).json({ data, message: 'Data berhasil diubah' })
     })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
@@ -103,7 +102,7 @@ export const deleteSelling = async (req, res, next) => {
         }
       })
 
-      if (selling.cashPrice > 0 && selling.returnPrice >= 0) res.status(500).json({ data: null, message: 'Transaksi penjualan sudah selesai' })
+      if (selling.cashPrice > 0 && selling.returnPrice >= 0) return res.status(500).json({ data: null, message: 'Transaksi penjualan sudah selesai' })
 
       const data = await model.selling.delete({
         where: {
@@ -111,10 +110,10 @@ export const deleteSelling = async (req, res, next) => {
         }
       })
 
-      res.status(200).json({ data, message: 'Data berhasil dihapus' })
+     return res.status(200).json({ data, message: 'Data berhasil dihapus' })
     })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }

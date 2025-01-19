@@ -11,8 +11,9 @@ export interface TabsModType {
   active?: string
   size?: 'small' | 'middle' | 'large'
   items: item[]
+  onChange?: (key: string) => void
 }
-export default function TabsMod({ defaultActiveKey, active, items, size }: TabsModType) {
+export default function TabsMod({ defaultActiveKey, active, items, size,onChange }: TabsModType) {
   return (
     <Tabs
       className='rounded-t-2xl'
@@ -22,6 +23,7 @@ export default function TabsMod({ defaultActiveKey, active, items, size }: TabsM
       size={size}
       style={{ marginBottom: 32 }}
       items={items}
+      onChange={onChange}
     >
       {items.map((item) => (
         <Tabs.TabPane key={item.key} tab={item.label}>

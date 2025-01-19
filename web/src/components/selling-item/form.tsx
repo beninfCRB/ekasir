@@ -24,7 +24,7 @@ export default function FormSellingItem({ form, onSave, onCancel, loading, asEdi
         ]}
       >
         <Input
-          disabled={asEdit}
+           disabled={loading}
           placeholder='Masukan Kode Produk'
         />
       </Form.Item>
@@ -40,6 +40,7 @@ export default function FormSellingItem({ form, onSave, onCancel, loading, asEdi
         ]}
       >
         <InputNumber
+          disabled={loading}
           className='w-full'
           placeholder='Masukan Jumlah Item'
         />

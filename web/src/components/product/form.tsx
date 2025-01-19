@@ -71,6 +71,7 @@ export default function FormProduct({ form, onSave, onCancel, asEdit, loading, f
         ]}
       >
         <Input
+          disabled={loading}
           placeholder='Masukan Nama Produk'
         />
       </Form.Item>
@@ -102,6 +103,7 @@ export default function FormProduct({ form, onSave, onCancel, asEdit, loading, f
         ]}
       >
         <InputNumber
+          disabled={loading}
           className='w-full'
           addonBefore='Rp.'
           placeholder='Masukan Harga Produk'

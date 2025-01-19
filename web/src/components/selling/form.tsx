@@ -64,11 +64,6 @@ export default function FormSelling({ form, onSave, onCancel, loading, asEdit }:
         <Col
           {...span}
         >
-          <Form.Item
-            noStyle
-            shouldUpdate={(prev, next) => prev.cashPrice !== next.cashPrice}
-          >
-            {({ getFieldValue }) =>
               <Form.Item
                 label='Bayar Tunai'
                 name={'cashPrice'}
@@ -81,7 +76,7 @@ export default function FormSelling({ form, onSave, onCancel, loading, asEdit }:
                 ]}
               >
                 <InputNumber
-                  disabled={getFieldValue('cashPrice') > 0 ? true : false}
+                  disabled={loading}
                   className='w-full'
                   addonBefore='Rp.'
                   placeholder='Masukan Bayar Tunai'
@@ -89,8 +84,6 @@ export default function FormSelling({ form, onSave, onCancel, loading, asEdit }:
                   parser={value => value!.replace(/Rp\s?|(,*)/g, '')}
                 />
               </Form.Item>
-            }
-          </Form.Item>
           <Form.Item
             label='Uang Kembali'
             name={'returnPrice'}

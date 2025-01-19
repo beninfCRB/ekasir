@@ -1,7 +1,7 @@
-import { Button, DatePicker, Form, Input, InputNumber, Space } from "antd";
+import { DatePicker, Form, Input, InputNumber } from "antd";
 import { FormType } from "../../types/form";
-import SelectProduct from "../product/select";
 import FormButton from "../button/form";
+import SelectProduct from "../product/select";
 
 interface FormStockType extends FormType { }
 
@@ -25,6 +25,7 @@ export default function FormStock({ form, onSave, onCancel, asEdit, loading }: F
         ]}
       >
         <Input
+          disabled={loading}
           placeholder='Masukan Kode Stok'
         />
       </Form.Item>
@@ -56,6 +57,7 @@ export default function FormStock({ form, onSave, onCancel, asEdit, loading }: F
         ]}
       >
         <InputNumber
+          disabled={loading}
           className="w-full"
           placeholder='Masukan Jumlah Stok'
         />
@@ -72,6 +74,7 @@ export default function FormStock({ form, onSave, onCancel, asEdit, loading }: F
         ]}
       >
         <DatePicker
+          disabled={loading}
           className="w-full"
           format={'DD/MM/YYYY'}
           placeholder='Masukan Tanggal Kadaluarsa'

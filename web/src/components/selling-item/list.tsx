@@ -11,7 +11,7 @@ import { catchError } from '../../utils/catch-error';
 
 const ContainerHeight = 250
 
-export default function ListSellingItem({ id }: { id?: string }) {
+export default function ListSellingItem({ id,tab }: { id?: string,tab?:string }) {
   const [data, setData] = useState<sellingItemType[] | []>([])
   const [isLoading, setLoading] = useState(false)
   const [deleted, setDeleted] = useState<string | undefined>(undefined)
@@ -51,7 +51,7 @@ export default function ListSellingItem({ id }: { id?: string }) {
 
   useEffect(() => {
     getData()
-  }, [])
+  }, [tab])
 
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     if (Math.abs(e.currentTarget.scrollHeight - e.currentTarget.scrollTop - ContainerHeight) <= 1) {

@@ -8,7 +8,7 @@ import moment from 'moment'
 export const signupController = async (req, res, next) => {
   try {
     const errors = validationResult(req)
-    if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
+    if (!errors.isEmpty()) return res.status(422).json({ data: null, message: errors.array() })
 
     const { email, username, password } = req.body;
 
@@ -18,7 +18,7 @@ export const signupController = async (req, res, next) => {
       }
     })
 
-    if (exist) res.status(404).json({ data: null, message: 'Email atau Username sudah ada!' })
+    if (exist) return res.status(404).json({ data: null, message: 'Email atau Username sudah ada!' })
 
     const hashPwd = passwordHash(password)
 
@@ -31,17 +31,17 @@ export const signupController = async (req, res, next) => {
       }
     })
 
-    res.status(201).json({ data, message: 'Akun berhasil dibuat' })
+    return res.status(201).json({ data, message: 'Akun berhasil dibuat' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
 export const signinController = async (req, res, next) => {
   try {
     const errors = validationResult(req)
-    if (!errors.isEmpty()) res.status(422).json({ data: null, message: errors.array() })
+    if (!errors.isEmpty()) return res.status(422).json({ data: null, message: errors.array() })
 
     const { email, password } = req.body;
 
@@ -51,11 +51,11 @@ export const signinController = async (req, res, next) => {
       }
     })
 
-    if (!exist) res.status(401).json({ data: null, message: 'Email atau Username tidak ditemukan!' })
+    if (!exist) return res.status(401).json({ data: null, message: 'Email atau Username tidak ditemukan!' })
 
     const validPwd = comparePassword(password, exist.password)
 
-    if (!validPwd) res.status(401).json({ data: null, message: 'Kata sandi salah!' })
+    if (!validPwd) return res.status(401).json({ data: null, message: 'Kata sandi salah!' })
 
     const accessToken = generateAccessToken(exist)
 
@@ -63,19 +63,19 @@ export const signinController = async (req, res, next) => {
 
     res.cookie("access-token", accessToken, { ...accessTokenOptions, sameSite: 'none' })
 
-    res.status(201).json({ data: exist, message: 'Sign In berhasil' })
+    return res.status(201).json({ data: exist, message: 'Sign In berhasil' })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: 'Gagal!!' })
+    return res.status(500).json({ data: null, message: 'Gagal!!' })
   }
 }
 
 export const signoutController = async (req, res, next) => {
   try {
     res.clearCookie("access-token", accessTokenOptions)
-    res.status(200).json({ data: null, message: "Sign out berhasil" })
+    return res.status(200).json({ data: null, message: "Sign out berhasil" })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
-    res.status(500).json({ data: null, message: "Sign out gagal" })
+    return res.status(500).json({ data: null, message: "Sign out gagal" })
   }
 };
