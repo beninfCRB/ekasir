@@ -2,6 +2,7 @@ import { Empty } from 'antd'
 import DescriptionSelling from '../selling/description'
 import { sellingType } from '../selling/types'
 import moment from 'moment'
+import { currency } from '../../utils/rupiah'
 
 export default function TemplateReport({ data }: { data: sellingType}) {
   return (
@@ -39,14 +40,14 @@ export default function TemplateReport({ data }: { data: sellingType}) {
                 <tr key={index}>
                   <td style={{ border: '1px solid black', padding: '8px' }}>{item.stock?.product?.name}</td>
                   <td style={{ border: '1px solid black', padding: '8px' }}>{item.amount}</td>
-                  <td style={{ border: '1px solid black', padding: '8px' }}>{item.price}</td>
-                  <td style={{ border: '1px solid black', padding: '8px' }}>{item.total}</td>
+                  <td style={{ border: '1px solid black', padding: '8px' }}>{currency(Number(item.price))}</td>
+                  <td style={{ border: '1px solid black', padding: '8px' }}>{currency(Number(item.total))}</td>
                 </tr>
               ))}
             </tbody>
           </table>
           <div style={{ textAlign: 'right', marginTop: '20px' }}>
-            <p>Total: {data.grandTotal}</p>
+            <p>Total: {currency(Number(data.grandTotal))}</p>
           </div>
         </div>
       ) : (
