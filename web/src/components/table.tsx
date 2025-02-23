@@ -131,7 +131,7 @@ export default function TableMod<T extends { id?: string }>({ data, columnlists,
         return (
           deleted === record.id ? <span className="flex flex-row justify-center gap-2">
             <Typography.Link onClick={() => onDelete(record.id as string)} style={{ marginInlineEnd: 8 }}>
-              Hapus
+              Lanjutkan
             </Typography.Link>
             <Popconfirm title="Batalkan tindakan hapus data ?" onConfirm={() => setDeleted(undefined)}>
               <a>Batal</a>
@@ -140,8 +140,8 @@ export default function TableMod<T extends { id?: string }>({ data, columnlists,
             :
             <div className="flex flex-row justify-center gap-2">
               <TooltipButton
-                title="View Data"
-                text="View"
+                title="Lihat Data"
+                text="Lihat"
                 textSize='xs'
                 icon={<EyeOutlined />}
                 type="dashed"
@@ -160,8 +160,8 @@ export default function TableMod<T extends { id?: string }>({ data, columnlists,
                 onCLick={() => onEdit(record.id as string)}
               />
               <TooltipButton
-                title="Delete Data"
-                text="Delete"
+                title="Hapus Data"
+                text="Hapus"
                 textSize='xs'
                 icon={<DeleteOutlined />}
                 type="dashed"
