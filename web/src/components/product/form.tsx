@@ -1,8 +1,8 @@
-import { Avatar, Button, Form, Image, Input, InputNumber, Space, Upload, UploadFile, UploadProps } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { Button, Form, Image, Input, InputNumber, Upload, UploadFile, UploadProps } from "antd";
 import { FormType } from "../../types/form";
 import FormButton from "../button/form";
 import SelectCategory from "../category/select";
-import { UploadOutlined } from "@ant-design/icons";
 
 interface FormProductType extends FormType {
   imageUrl?: string

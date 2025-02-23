@@ -1,5 +1,5 @@
 import { DashboardOutlined, LogoutOutlined, SearchOutlined, ShoppingCartOutlined } from '@ant-design/icons'
-import { Card, Image, Layout, Menu, Select, Spin, Input, Badge, Empty, Typography, Row, Col, Statistic, message } from 'antd'
+import { Card, Col, Empty, Image, Input, Layout, Menu, Row, Select, Spin, Statistic, Typography, message } from 'antd'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import TooltipButton from '../components/button/toolltip'

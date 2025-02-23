@@ -1,4 +1,4 @@
-import { Button, Form, Input, InputNumber, Space } from "antd";
+import { Form, Input, InputNumber } from "antd";
 import { FormType } from "../../types/form";
 import FormButton from "../button/form";
 

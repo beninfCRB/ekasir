@@ -1,14 +1,13 @@
 import { RollbackOutlined } from "@ant-design/icons";
-import { Breadcrumb, Card, Descriptions, DescriptionsProps, message, Spin } from "antd";
+import { Breadcrumb, Card, message, Spin } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { generateBreadcrumbItems } from "../../components/breadcrumb";
 import TooltipButton from "../../components/button/toolltip";
+import DescriptionSelling from "../../components/selling/description";
 import { sellingType } from "../../components/selling/types";
 import { base_url } from "../../constants/env";
 import axiosInstance from "../../utils/axios";
-import { currency } from "../../utils/rupiah";
-import DescriptionSelling from "../../components/selling/description";
 import { catchError } from "../../utils/catch-error";
 
 export default function ViewSelling() {

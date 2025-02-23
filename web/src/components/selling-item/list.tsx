@@ -1,19 +1,19 @@
+import { DeleteOutlined } from '@ant-design/icons';
 import { Card, Empty, List, message, Popconfirm, Typography } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { useCallback, useEffect, useState } from 'react';
 import { base_url } from '../../constants/env';
 import axiosInstance from '../../utils/axios';
-import { currency } from '../../utils/rupiah';
-import { sellingItemType } from './types';
-import { DeleteOutlined } from '@ant-design/icons';
-import TooltipButton from '../button/toolltip';
 import { catchError } from '../../utils/catch-error';
+import { currency } from '../../utils/rupiah';
+import TooltipButton from '../button/toolltip';
+import { sellingItemType } from './types';
 
 const ContainerHeight = 250
 
 export default function ListSellingItem({ id,tab }: { id?: string,tab?:string }) {
   const [data, setData] = useState<sellingItemType[] | []>([])
-  const [isLoading, setLoading] = useState(false)
+  const [ _,setLoading] = useState(false)
   const [deleted, setDeleted] = useState<string | undefined>(undefined)
 
   const getData = useCallback(async () => {

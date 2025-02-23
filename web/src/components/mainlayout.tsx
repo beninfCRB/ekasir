@@ -1,12 +1,12 @@
-import { ContainerOutlined, DollarOutlined, FileDoneOutlined, HomeOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, ProductOutlined, StockOutlined, TransactionOutlined } from "@ant-design/icons";
+import { ContainerOutlined, DollarOutlined, HomeOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, ProductOutlined, StockOutlined, TransactionOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, MenuProps, message, theme } from "antd";
 import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { base_url } from "../constants/env";
 import { ProtectedRoute } from "../pages/protected-route";
 import axiosInstance, { setupAxiosInterceptors } from "../utils/axios";
-import TooltipButton from "./button/toolltip";
 import { catchError } from "../utils/catch-error";
+import TooltipButton from "./button/toolltip";
 
 const { Header, Content, Sider } = Layout;
 
