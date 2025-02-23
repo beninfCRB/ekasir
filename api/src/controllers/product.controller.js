@@ -41,7 +41,6 @@ export const getProduct = async (req, res, next) => {
 
 export const createProduct = async (req, res, next) => {
   try {
-    return await prisma.$transaction(async (model) => {
       const errors = validationResult(req)
       if (!errors.isEmpty()) return res.status(422).json({ data: null, message: errors.array() })
 
@@ -52,7 +51,7 @@ export const createProduct = async (req, res, next) => {
 
       const { imageId, imageUrl } = await cloudinaryUpload(req.files.file)
 
-      const data = await model.product.create({
+      const data = await prisma.product.create({
         data: {
           code,
           name,
@@ -67,7 +66,6 @@ export const createProduct = async (req, res, next) => {
 
 
      return res.status(201).json({ data, message: 'Data berhasil dibuat' })
-    })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`)
     return res.status(500).json({ data: null, message: 'Gagal!!' })
@@ -76,7 +74,6 @@ export const createProduct = async (req, res, next) => {
 
 export const updateProduct = async (req, res, next) => {
   try {
-    return await prisma.$transaction(async (model) => {
       const errors = validationResult(req)
       if (!errors.isEmpty()) return res.status(422).json({ data: null, message: errors.array() })
 
@@ -84,7 +81,7 @@ export const updateProduct = async (req, res, next) => {
 
       const userId = (await getCurrentUser(req)).id
 
-      const exist = await model.product.findFirst({
+      const exist = await prisma.product.findFirst({
         where: {
           id: req.params.id
         }
@@ -92,7 +89,7 @@ export const updateProduct = async (req, res, next) => {
 
       const { imageId, imageUrl } = await cloudinaryReUpload(exist.imageId, req.files.file)
 
-      const data = await model.product.update({
+      const data = await prisma.product.update({
         where: {
           id: req.params.id
         },
@@ -109,7 +106,6 @@ export const updateProduct = async (req, res, next) => {
       if (!data) await cloudinaryDelete(exist.imageId)
 
      return res.status(201).json({ data, message: 'Data berhasil diubah' })
-    })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
    return res.status(500).json({ data: null, message: 'Gagal!!' })
@@ -118,8 +114,7 @@ export const updateProduct = async (req, res, next) => {
 
 export const deleteProduct = async (req, res, next) => {
   try {
-    return await prisma.$transaction(async (model) => {
-      const data = await model.product.delete({
+      const data = await prisma.product.delete({
         where: {
           id: req.params.id
         }
@@ -130,7 +125,6 @@ export const deleteProduct = async (req, res, next) => {
       }
 
      return res.status(200).json({ data, message: 'Data berhasil dihapus' })
-    })
   } catch (error) {
     console.log(`[ ${moment().format('DD/MM/YYYY HH:mm:ss')} ] ${error}`);
     return res.status(500).json({ data: null, message: 'Gagal!!' })
