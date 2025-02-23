@@ -39,7 +39,7 @@ export default function TemplateReport({ data }: { data: sellingType}) {
               {data.selling_item?.map((item, index) => (
                 <tr key={index}>
                   <td style={{ border: '1px solid black', padding: '8px' }}>{item.stock?.product?.name}</td>
-                  <td style={{ border: '1px solid black', padding: '8px' }}>{item.amount}</td>
+                  <td style={{ border: '1px solid black', padding: '8px', textAlign: 'center' }}>{item.amount}</td>
                   <td style={{ border: '1px solid black', padding: '8px' }}>{currency(Number(item.price))}</td>
                   <td style={{ border: '1px solid black', padding: '8px' }}>{currency(Number(item.total))}</td>
                 </tr>
