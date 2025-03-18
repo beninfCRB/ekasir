@@ -1,4 +1,4 @@
-import { passwordHash } from '../src/utils/password.util'
+import { passwordHash } from '../src/utils/password.util.js'
 
 export async function seedUser(prisma) {
   const data = [
@@ -10,7 +10,7 @@ export async function seedUser(prisma) {
     },
   ]
 
-  await prisma.user.create({
+  await prisma.user.createMany({
     data: data
   })
 }
